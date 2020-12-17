@@ -1,16 +1,10 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { AuthResult } from "../entity/AuthResult";
 import { User } from "../entity/User";
-import { StudentInput } from "../type/Student";
 import * as bcrypt from "bcrypt";
 import { generateJwt } from "../utils/helpers";
 import { getRepository } from "typeorm";
-import {stringify} from "querystring";
 
-type UserInput = {
-    email: string,
-    password: string
-}
 
 @Resolver(User)
 export class UserResolver {
