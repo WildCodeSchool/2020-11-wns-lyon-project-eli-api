@@ -1,21 +1,75 @@
 import "reflect-metadata";
-import {createConnection} from "typeorm";
+import {Connection, createConnection, getManager} from "typeorm";
+import {AuthChecker, buildSchema} from "type-graphql";
+import {decodeJwt} from "./utils/helpers";
 import {User} from "./entity/User";
+import cors = require('cors');
+import cookieParser = require('cookie-parser');
+import {UserResolver} from "./resolvers/User";
 
-createConnection().then(async connection => {
+const {
+    ApolloServer,
+    gql,
+    AuthenticationError,
+} = require('apollo-server-express')
+const Express = require('express');
 
-    console.log("Inserting a new user into the database...");
-    const user = new User();
-    user.firstName = "Timber";
-    user.lastName = "Saw";
-    user.age = 25;
-    await connection.manager.save(user);
-    console.log("Saved a new user with id: " + user.id);
+export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
+    // `roles` comes from the `@Authorized` decorator, eg. ["ADMIN", "MODERATOR"]
+    try {
+        // appSession = cookie.key
+        // token = cookie.value
+        const token = context.req.cookies.appSession;
 
-    console.log("Loading users from the database...");
-    const users = await connection.manager.find(User);
-    console.log("Loaded users: ", users);
+        if (token) {
+            const manager = getManager();
+            const data = decodeJwt(token);
+            context.user = await manager.findOneOrFail(User, {id: data.userId});
 
-    console.log("Here you can setup and run express/koa/any other framework.");
+            /**
+             * Here, we can reset the token each request to maintain the user connected
+             const newToken = generateJwt({ userId: context.user.id });
+             context.res.cookie('appSession', newToken, { maxAge: 60 * 24, httpOnly: true });
+             */
 
-}).catch(error => console.log(error));
+            return true;
+        } else {
+            return false;
+        }
+    } catch {
+        return false;
+    }
+};
+
+const startServer = async () => {
+    const connexion: Connection = await createConnection({
+        type: "mysql",
+        host: "localhost",
+        port: 3306,
+        username: "pako",
+        password: "rek",
+        database: "ELI",
+        entities: [
+            User
+        ],
+        synchronize: true,
+    });
+
+    const schema = await buildSchema({
+        resolvers: [UserResolver],
+        authChecker: passwordAuthChecker,
+
+    });
+
+    const app = Express()
+    app.use(cors());
+    app.use(cookieParser());
+    const server = new ApolloServer({schema, context: ({ req, res }) => ({ req, res })})
+
+    server.applyMiddleware({app});
+
+    app.listen(4300, () => {
+        console.log('server started');
+    })
+}
+startServer()

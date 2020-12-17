@@ -1,14 +1,27 @@
 {
    "compilerOptions": {
-      "lib": ["es2018", "esnext.asynciterable"],
       "target": "es2018",
       "module": "commonjs",
-      "moduleResolution": "node",
-      "outDir": "./build",
-      "emitDecoratorMetadata": true,
+      "lib": [
+         "es2018",
+         "esnext.asynciterable"
+      ],
       "experimentalDecorators": true,
-      "sourceMap": true
+      "emitDecoratorMetadata": true,
+      "outDir": "./dist",
+      "strict": true,
+      "noImplicitAny": false,
+      "strictNullChecks": true,
+      "alwaysStrict": true,
+      "moduleResolution": "node",
+      "baseUrl": "./src",
+      "esModuleInterop": true
    },
-   "exclude": ["./node_modules"],
-   "include": ["./src/**/*.ts"]
+   "include": [
+      "src/**/*.ts"
+   ],
+   "exclude": [
+      "node_modules",
+      ".vscode"
+   ]
 }
