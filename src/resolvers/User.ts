@@ -16,8 +16,14 @@ export class UserResolver {
     }
 
     @Query(() => User)
-    @Authorized()
+    //@Authorized()
     public async authenticatedUser(@Ctx() ctx): Promise<User> {
+        return ctx.user;
+    }
+
+    @Query(() => User)
+    //@Authorized()
+    public async getUser(@Ctx() ctx): Promise<User> {
         return ctx.user;
     }
 
