@@ -51,5 +51,12 @@ export class UserResolver {
         return await this.userRepo.save(user)
     }
 
+    @Mutation(() => User)
+    public async createUser(@Arg('values', () => User) values: User): Promise<User> {
+        const hash = await UserResolver.hashPassword(values.password)
+        const user = this.userRepo.create({...values, password: hash});
+        return await this.userRepo.save(user)
+    }
+
     // create Teacher - data: TeacherInput
 }
