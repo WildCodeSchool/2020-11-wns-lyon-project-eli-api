@@ -44,15 +44,23 @@ export class UserResolver {
         }
     }
 
+/*
     @Mutation(() => User)
     public async createStudent(@Arg('data', () => User) data: User): Promise<User> {
         const hash = await UserResolver.hashPassword(data.password)
         const user = this.userRepo.create({...data, password: hash});
         return await this.userRepo.save(user)
     }
+*/
 
     @Mutation(() => User)
     public async createUser(@Arg('values', () => User) values: User): Promise<User> {
+
+        // TODO
+        // check inputs
+        // ... create function in utils folder
+        // + decorators in entities
+
         const hash = await UserResolver.hashPassword(values.password)
         const user = this.userRepo.create({...values, password: hash});
         return await this.userRepo.save(user)

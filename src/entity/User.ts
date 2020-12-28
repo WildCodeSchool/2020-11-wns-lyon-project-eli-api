@@ -1,6 +1,7 @@
 import {Field, InputType, ObjectType} from "type-graphql";
 import {Entity, BaseEntity, Column, PrimaryGeneratedColumn} from "typeorm";
 
+export type ROLE = "TEACHER" | "STUDENT";
 
 @ObjectType('User')
 @InputType('UserInput')
@@ -24,6 +25,10 @@ export class User extends BaseEntity {
     @Field()
     @Column()
     lastName!: string;
+
+    @Field()
+    @Column()
+    role!: ROLE;
 
     /*
         @Field()
