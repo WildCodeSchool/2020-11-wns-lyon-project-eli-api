@@ -28,7 +28,7 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
 
             /**
              * Here, we can reset the token each request to maintain the user connected
-             const newToken = generateJwt({ userId: context.user.id });
+                const newToken = generateJwt({ userId: context.user.id });
              context.res.cookie('appSession', newToken, { maxAge: 60 * 24, httpOnly: true });
              */
 
@@ -46,8 +46,8 @@ const startServer = async () => {
         type: "mysql",
         host: "localhost",
         port: 3306,
-        username: "pako",
-        password: "rek",
+        username: "root",
+        password: "Bqhzhori78#4",
         database: "ELI",
         entities: [
             User
