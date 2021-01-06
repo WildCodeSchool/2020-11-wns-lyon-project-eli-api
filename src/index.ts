@@ -11,19 +11,14 @@ import {Promotion} from "./entity/Promotion";
 import {Speciality} from "./entity/Speciality";
 import {Upload} from "./entity/Upload";
 import {Evaluation} from "./entity/Evaluation";
+import {ContactInformation} from "./entity/ContactInformation";
 
-const {
-    ApolloServer,
-    gql,
-    AuthenticationError,
-} = require('apollo-server-express')
+const { ApolloServer } = require('apollo-server-express')
 const Express = require('express');
 
 export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
     // `roles` comes from the `@Authorized` decorator, eg. ["ADMIN", "MODERATOR"]
     try {
-        // appSession = cookie.key
-        // token = cookie.value
         const token = context.req.cookies.appSession;
 
         if (token) {
@@ -55,7 +50,7 @@ const startServer = async () => {
         password: "rek",
         database: "ELI",
         entities: [
-            User, Course, Promotion, Speciality, Upload, Evaluation
+            User, Course, Promotion, Speciality, Upload, Evaluation, ContactInformation
         ],
         synchronize: true,
         migrations: ["migration/*.ts"],
