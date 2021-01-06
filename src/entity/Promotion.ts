@@ -1,6 +1,6 @@
 import {Field, InputType, ObjectType} from "type-graphql";
 import {Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, ManyToMany, JoinTable} from "typeorm";
-import {IsAlpha, IsEmail, IsNotEmpty, Length} from "class-validator";
+import {IsAlpha, isAlphanumeric, IsEmail, IsNotEmpty, Length} from "class-validator";
 import {User} from "./User";
 import {Course} from "./Course";
 import {Upload} from "./Upload";
@@ -20,7 +20,7 @@ export class Promotion extends BaseEntity {
     users!: User[];
 
     @ManyToMany(() => Course)
-    @JoinTable()
+    @JoinTable({ name: 'promotion_has_courses' })
     courses!: Course[];
 }
 

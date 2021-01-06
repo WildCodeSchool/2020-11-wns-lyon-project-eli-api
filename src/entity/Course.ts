@@ -30,7 +30,7 @@ export class Course extends BaseEntity {
     user!: User;
 
     @ManyToMany(() => Upload)
-    @JoinTable()
+    @JoinTable({ name: 'course_has_uploads' })
     uploads!: Upload[];
 }
 

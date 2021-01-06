@@ -1,6 +1,6 @@
 import {Field, InputType, ObjectType} from "type-graphql";
 import {Entity, BaseEntity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, ManyToMany, JoinTable} from "typeorm";
-import {IsAlpha, IsEmail, IsNotEmpty, Length} from "class-validator";
+import {IsAlpha, IsEmail, IsNotEmpty, IsString, Length} from "class-validator";
 import {Course} from "./Course";
 import {Promotion} from "./Promotion";
 import {Upload} from "./Upload";
@@ -28,13 +28,13 @@ export class User extends BaseEntity {
 
     @Field()
     @Column()
-    // @IsAlpha()
+    @IsString()
     @IsNotEmpty({ message: 'The firstname is required' })
     firstName!: string;
 
     @Field()
     @Column()
-    // @IsAlpha()
+    @IsString()
     @IsNotEmpty({ message: 'The lastname is required' })
     lastName!: string;
 
@@ -53,34 +53,12 @@ export class User extends BaseEntity {
 
     //for teacher
     @ManyToMany(() => Promotion)
-    @JoinTable()
+    @JoinTable({ name: 'teacher_has_promotions' })
     promotions!: Promotion[];
 
     // for teacher
     @ManyToMany(() => Speciality)
-    @JoinTable()
+    @JoinTable({ name: 'teacher_has_specialities' })
     specialities!: Speciality[];
-
-    /*
-        @Field()
-        @Column()
-        birthdate!: string;
-
-        @Field()
-        @Column()
-        gender!: string;
-
-        @Field()
-        @Column()
-        phone!: string; // number ?
-
-        @Field()
-        @Column()
-        adress!: string;
-
-        @Field()
-        @Column()
-        created_at!: string; // Date
-    */
 }
 
