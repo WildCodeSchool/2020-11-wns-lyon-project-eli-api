@@ -6,6 +6,10 @@ import {User} from "./entity/User";
 import cors = require('cors');
 import cookieParser = require('cookie-parser');
 import {UserResolver} from "./resolvers/User";
+import {Course} from "./entity/Course";
+import {Promotion} from "./entity/Promotion";
+import {Speciality} from "./entity/Speciality";
+import {Upload} from "./entity/Upload";
 
 const {
     ApolloServer,
@@ -50,7 +54,7 @@ const startServer = async () => {
         password: "rek",
         database: "ELI",
         entities: [
-            User
+            User, Course, Promotion, Speciality, Upload
         ],
         synchronize: true,
     });
