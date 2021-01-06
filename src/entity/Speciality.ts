@@ -1,7 +1,6 @@
 import {Field, InputType, ObjectType} from "type-graphql";
-import {Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
-import {IsAlpha, IsEmail, IsNotEmpty, Length} from "class-validator";
-import {User} from "./User";
+import {Entity, BaseEntity, Column, PrimaryGeneratedColumn} from "typeorm";
+import { Length } from "class-validator";
 
 @ObjectType('Speciality')
 @InputType('SpecialityInput')
@@ -12,6 +11,7 @@ export class Speciality extends BaseEntity {
 
     @Field()
     @Column()
+    @Length(2, 50,
+        { message: 'The speciality must be at least 2 but not longer than 50 characters' })
     name!: string;
 }
-

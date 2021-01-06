@@ -1,9 +1,8 @@
 import {Field, InputType, ObjectType} from "type-graphql";
-import {Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, ManyToMany, JoinTable} from "typeorm";
-import {IsAlpha, isAlphanumeric, IsEmail, IsNotEmpty, Length} from "class-validator";
+import {Entity, BaseEntity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, JoinTable} from "typeorm";
+import { IsNotEmpty } from "class-validator";
 import {User} from "./User";
 import {Course} from "./Course";
-import {Upload} from "./Upload";
 
 @ObjectType('Promotion')
 @InputType('PromotionInput')
@@ -14,6 +13,7 @@ export class Promotion extends BaseEntity {
 
     @Field()
     @Column()
+    @IsNotEmpty()
     name!: string;
 
     @OneToMany(() => User, user => user.promotion)

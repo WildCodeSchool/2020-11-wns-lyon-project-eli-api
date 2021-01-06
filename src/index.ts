@@ -10,6 +10,7 @@ import {Course} from "./entity/Course";
 import {Promotion} from "./entity/Promotion";
 import {Speciality} from "./entity/Speciality";
 import {Upload} from "./entity/Upload";
+import {Evaluation} from "./entity/Evaluation";
 
 const {
     ApolloServer,
@@ -54,9 +55,13 @@ const startServer = async () => {
         password: "rek",
         database: "ELI",
         entities: [
-            User, Course, Promotion, Speciality, Upload
+            User, Course, Promotion, Speciality, Upload, Evaluation
         ],
         synchronize: true,
+        migrations: ["migration/*.ts"],
+        cli: {
+            "migrationsDir": "migration"
+        }
     });
 
     const schema = await buildSchema({

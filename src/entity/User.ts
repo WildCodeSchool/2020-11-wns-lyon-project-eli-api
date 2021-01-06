@@ -1,10 +1,10 @@
 import {Field, InputType, ObjectType} from "type-graphql";
 import {Entity, BaseEntity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, ManyToMany, JoinTable} from "typeorm";
-import {IsAlpha, IsEmail, IsNotEmpty, IsString, Length} from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
 import {Course} from "./Course";
 import {Promotion} from "./Promotion";
-import {Upload} from "./Upload";
 import {Speciality} from "./Speciality";
+import {Evaluation} from "./Evaluation";
 
 export type ROLE = "TEACHER" | "STUDENT";
 
@@ -43,22 +43,31 @@ export class User extends BaseEntity {
     @IsNotEmpty({ message: 'The role is required' })
     role!: ROLE;
 
-    @OneToMany(() => Course, course => course.user)
-    courses!: Course[];
-
     // for student
     @ManyToOne(() => Promotion, promotion => promotion.users)
     promotion!: Promotion;
 
+    @ManyToMany(() => Evaluation)
+    @JoinTable({ name: 'student_has_evaluations' })
+    student_evaluations!: Evaluation[];
 
-    //for teacher
+    ////
+
+    // for teacher
+    @OneToMany(() => Course, course => course.user)
+    courses!: Course[];
+
+    @OneToMany(() => Evaluation, evaluation => evaluation.user)
+    teacher_evaluations!: Evaluation[];
+
     @ManyToMany(() => Promotion)
     @JoinTable({ name: 'teacher_has_promotions' })
     promotions!: Promotion[];
 
-    // for teacher
     @ManyToMany(() => Speciality)
     @JoinTable({ name: 'teacher_has_specialities' })
     specialities!: Speciality[];
+
+    ////
 }
 

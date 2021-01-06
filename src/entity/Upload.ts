@@ -1,7 +1,6 @@
 import {Field, InputType, ObjectType} from "type-graphql";
-import {Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
-import {IsAlpha, IsEmail, IsNotEmpty, isURL, Length} from "class-validator";
-import {User} from "./User";
+import {Entity, BaseEntity, Column, PrimaryGeneratedColumn} from "typeorm";
+import { IsUrl } from "class-validator";
 
 @ObjectType('Upload')
 @InputType('UploadInput')
@@ -12,6 +11,7 @@ export class Upload extends BaseEntity {
 
     @Field()
     @Column()
+    @IsUrl()
     url!: string;
 }
 
