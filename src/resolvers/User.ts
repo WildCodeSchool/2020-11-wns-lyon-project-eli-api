@@ -3,7 +3,8 @@ import { AuthResult } from "../entity/AuthResult";
 import { User } from "../entity/User";
 import * as bcrypt from "bcrypt";
 import { generateJwt } from "../utils/helpers";
-import { getRepository } from "typeorm";
+import {getRepository} from "typeorm";
+import {validate} from "class-validator";
 
 
 @Resolver(User)
@@ -54,7 +55,7 @@ export class UserResolver {
 */
 
     @Mutation(() => User)
-    public async createUser(@Arg('values', () => User) values: User): Promise<User> {
+    public async createUser(@Arg('values', () => User) values: User): Promise<User | void> {
 
         // TODO
         // check inputs
@@ -63,7 +64,12 @@ export class UserResolver {
 
         const hash = await UserResolver.hashPassword(values.password)
         const user = this.userRepo.create({...values, password: hash});
-        return await this.userRepo.save(user)
+        // validate isn't required ...
+        // seem graphQL already manage it (with InputType / decorators in User Entity)
+        // const errors = await validate(user);
+        // console.log('validate errors', errors)
+        // and so, next catch(err) isn't required to ?
+        return await this.userRepo.save(user).catch(err => console.log('save error', err))
     }
 
     // create Teacher - data: TeacherInput
