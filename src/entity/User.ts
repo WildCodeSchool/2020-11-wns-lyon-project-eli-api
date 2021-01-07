@@ -27,7 +27,7 @@ export class User extends BaseEntity {
     id!: number;
 
     @Field()
-    @Column()
+    @Column({ unique: true })
     @IsEmail({}, { message: 'Incorrect email' })
     email!: string;
 
