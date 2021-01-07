@@ -12,6 +12,7 @@ import {Speciality} from "./entity/Speciality";
 import {Upload} from "./entity/Upload";
 import {Evaluation} from "./entity/Evaluation";
 import {ContactInformation} from "./entity/ContactInformation";
+require('dotenv').config()
 
 const { ApolloServer } = require('apollo-server-express')
 const Express = require('express');
@@ -47,10 +48,10 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
 const startServer = async () => {
     const connexion: Connection = await createConnection({
         type: "mysql",
-        host: "localhost",
+        host: process.env.DB_HOST,
         port: 3306,
-        username: "pako",
-        password: "rek",
+        username: process.env.DB_USER,
+        password: process.env.DB_PASS,
         database: "ELI",
         entities: [
             User, Course, Promotion, Speciality, Upload, Evaluation, ContactInformation
