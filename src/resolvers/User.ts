@@ -19,6 +19,7 @@ export class UserResolver {
     @Query(() => User)
     //@Authorized()
     public async authenticatedUser(@Ctx() ctx): Promise<User> {
+        console.log()
         return ctx.user;
     }
 
@@ -53,7 +54,7 @@ export class UserResolver {
         return await this.userRepo.save(user)
     }
 */
-
+    // @Authorized("TEACHER")
     @Mutation(() => User)
     public async createUser(@Arg('values', () => User) values: User): Promise<User | void> {
 

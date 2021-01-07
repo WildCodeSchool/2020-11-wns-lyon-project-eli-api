@@ -1,5 +1,14 @@
 import {Field, InputType, ObjectType} from "type-graphql";
-import {Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable} from "typeorm";
+import {
+    Entity,
+    BaseEntity,
+    Column,
+    PrimaryGeneratedColumn,
+    ManyToOne,
+    ManyToMany,
+    JoinTable,
+    CreateDateColumn, UpdateDateColumn
+} from "typeorm";
 import {IsOptional, Length} from "class-validator";
 import {User} from "./User";
 import {Upload} from "./Upload";
@@ -28,8 +37,11 @@ export class Course extends BaseEntity {
     @IsOptional()
     content!: string;
 
-    @Column()
-    created_at!: Date;
+    @CreateDateColumn({type: "timestamp"})
+    createdAt!: Date;
+
+    @UpdateDateColumn({type: "timestamp"})
+    updatedAt!: Date;
 
     @ManyToOne(() => User, user => user.courses)
     user!: User;

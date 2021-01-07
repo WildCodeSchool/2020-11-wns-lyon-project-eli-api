@@ -8,7 +8,7 @@ import {
     ManyToOne,
     ManyToMany,
     JoinTable,
-    JoinColumn, OneToOne
+    JoinColumn, OneToOne, UpdateDateColumn, CreateDateColumn
 } from "typeorm";
 import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
 import {Course} from "./Course";
@@ -84,5 +84,11 @@ export class User extends BaseEntity {
     specialities!: Speciality[];
 
     ////
+
+    @CreateDateColumn({type: "timestamp"})
+    createdAt!: Date;
+
+    @UpdateDateColumn({type: "timestamp"})
+    updatedAt!: Date;
 }
 

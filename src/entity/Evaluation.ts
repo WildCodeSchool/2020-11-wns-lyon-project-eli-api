@@ -1,5 +1,14 @@
 import {Field, InputType, ObjectType} from "type-graphql";
-import {Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne} from "typeorm";
+import {
+    Entity,
+    BaseEntity,
+    Column,
+    PrimaryGeneratedColumn,
+    ManyToMany,
+    JoinTable,
+    ManyToOne,
+    CreateDateColumn, UpdateDateColumn
+} from "typeorm";
 import {IsBoolean, IsOptional, IsPositive, Length} from "class-validator";
 import {User} from "./User";
 import {Upload} from "./Upload";
@@ -49,7 +58,10 @@ export class Evaluation extends BaseEntity {
     @ManyToOne(() => User, user => user.teacher_evaluations)
     user!: User;
 
-    @Column()
-    created_at!: Date;
+    @CreateDateColumn({type: "timestamp"})
+    createdAt!: Date;
+
+    @UpdateDateColumn({type: "timestamp"})
+    updatedAt!: Date;
 }
 

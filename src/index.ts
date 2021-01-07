@@ -19,12 +19,15 @@ const Express = require('express');
 export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
     // `roles` comes from the `@Authorized` decorator, eg. ["ADMIN", "MODERATOR"]
     try {
-        const token = context.req.cookies.appSession;
+        const token = context.req.headers.authorization.split('Bearer ')[1];
+        // console.log('token', token)
+
 
         if (token) {
             const manager = getManager();
             const data = decodeJwt(token);
             context.user = await manager.findOneOrFail(User, {id: data.userId});
+            console.log('passwordAuthChecker : context.user', context.user)
 
             /**
              * Here, we can reset the token each request to maintain the user connected
