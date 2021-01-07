@@ -1,0 +1,24 @@
+services:
+  db:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+#      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: pako
+      MYSQL_PASSWORD: rek
+#      MYSQL_DATABASE: ELI
+#  adminer:
+#    image: adminer
+#    restart: always
+#    ports:
+#      - 8080:8080
+#
+  eli_api:
+    build: .
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+#    command: ["./wait-for-it.sh", "mysql:3306"]
+

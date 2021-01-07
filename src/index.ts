@@ -48,19 +48,19 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
 const startServer = async () => {
     const connexion: Connection = await createConnection({
         type: "mysql",
-        host: process.env.DB_HOST,
+        host: 'db',
         port: 3306,
         username: process.env.DB_USER,
         password: process.env.DB_PASS,
-        database: "ELI",
-        entities: [
-            User, Course, Promotion, Speciality, Upload, Evaluation, ContactInformation
-        ],
-        synchronize: true,
-        migrations: ["migration/*.ts"],
-        cli: {
-            "migrationsDir": "migration"
-        }
+        // database: "ELI",
+        // entities: [
+        //     User, Course, Promotion, Speciality, Upload, Evaluation, ContactInformation
+        // ],
+        // synchronize: true,
+        // migrations: ["migration/*.ts"],
+        // cli: {
+        //     "migrationsDir": "migration"
+        // }
     });
 
     const schema = await buildSchema({

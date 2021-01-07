@@ -5,7 +5,6 @@ build/
 tmp/
 temp/
 dist/
-Dockerfile
-docker-compose.yml
+
 .env
 package-lock.json
