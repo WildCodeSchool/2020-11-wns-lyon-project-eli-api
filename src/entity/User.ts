@@ -1,4 +1,4 @@
-import {Field, InputType, ObjectType} from "type-graphql";
+import {Authorized, Field, InputType, ObjectType} from "type-graphql";
 import {
     Entity,
     BaseEntity,
@@ -8,9 +8,9 @@ import {
     ManyToOne,
     ManyToMany,
     JoinTable,
-    JoinColumn, OneToOne, UpdateDateColumn, CreateDateColumn
+    OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn
 } from "typeorm";
-import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
+import {IsEmail, IsNotEmpty, IsString, Length} from "class-validator";
 import {Course} from "./Course";
 import {Promotion} from "./Promotion";
 import {Speciality} from "./Speciality";
@@ -79,6 +79,8 @@ export class User extends BaseEntity {
     @JoinTable({ name: 'teacher_has_promotions' })
     promotions!: Promotion[];
 
+    // for teacher
+    @Authorized('TEACHER')
     @ManyToMany(() => Speciality)
     @JoinTable({ name: 'teacher_has_specialities' })
     specialities!: Speciality[];

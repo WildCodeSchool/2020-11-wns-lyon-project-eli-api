@@ -1,10 +1,9 @@
 import "reflect-metadata";
-import {Connection, createConnection, getManager} from "typeorm";
-import {AuthChecker, buildSchema} from "type-graphql";
-import {decodeJwt} from "./utils/helpers";
-import {User} from "./entity/User";
+import {Connection, createConnection} from "typeorm";
+import {buildSchema} from "type-graphql";
 import cors = require('cors');
 import cookieParser = require('cookie-parser');
+import {User} from "./entity/User";
 import {UserResolver} from "./resolvers/User";
 import {Course} from "./entity/Course";
 import {Promotion} from "./entity/Promotion";
@@ -12,38 +11,13 @@ import {Speciality} from "./entity/Speciality";
 import {Upload} from "./entity/Upload";
 import {Evaluation} from "./entity/Evaluation";
 import {ContactInformation} from "./entity/ContactInformation";
-require('dotenv').config()
+import {CourseResolver} from "./resolvers/Course";
+import { passwordAuthChecker } from "./utils/auth-checker"
 
 const { ApolloServer } = require('apollo-server-express')
 const Express = require('express');
+require('dotenv').config()
 
-export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
-    // `roles` comes from the `@Authorized` decorator, eg. ["ADMIN", "MODERATOR"]
-    try {
-        const token = context.req.headers.authorization.split('Bearer ')[1];
-        // console.log('token', token)
-
-
-        if (token) {
-            const manager = getManager();
-            const data = decodeJwt(token);
-            context.user = await manager.findOneOrFail(User, {id: data.userId});
-            console.log('passwordAuthChecker : context.user', context.user)
-
-            /**
-             * Here, we can reset the token each request to maintain the user connected
-             const newToken = generateJwt({ userId: context.user.id });
-             context.res.cookie('appSession', newToken, { maxAge: 60 * 24, httpOnly: true });
-             */
-
-            return true;
-        } else {
-            return false;
-        }
-    } catch {
-        return false;
-    }
-};
 
 const startServer = async () => {
     const connexion: Connection = await createConnection({
@@ -64,7 +38,7 @@ const startServer = async () => {
     });
 
     const schema = await buildSchema({
-        resolvers: [UserResolver],
+        resolvers: [UserResolver, CourseResolver],
         authChecker: passwordAuthChecker,
 
     });
@@ -72,7 +46,7 @@ const startServer = async () => {
     const app = Express()
     app.use(cors());
     app.use(cookieParser());
-    const server = new ApolloServer({schema, context: ({ req, res }) => ({ req, res })})
+    const server = new ApolloServer({schema, context: ({req, res}) => ({req, res})})
 
     server.applyMiddleware({app});
 
@@ -81,3 +55,6 @@ const startServer = async () => {
     })
 }
 startServer()
+    .catch((e) => {
+        console.log(e)
+    });
