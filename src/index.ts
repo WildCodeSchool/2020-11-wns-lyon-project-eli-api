@@ -52,11 +52,11 @@ const startServer = async () => {
         port: 3306,
         username: process.env.DB_USER,
         password: process.env.DB_PASS,
-        // database: "ELI",
-        // entities: [
-        //     User, Course, Promotion, Speciality, Upload, Evaluation, ContactInformation
-        // ],
-        // synchronize: true,
+        database: "ELI",
+        entities: [
+            User, Course, Promotion, Speciality, Upload, Evaluation, ContactInformation
+        ],
+        synchronize: true,
         // migrations: ["migration/*.ts"],
         // cli: {
         //     "migrationsDir": "migration"

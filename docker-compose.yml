@@ -7,7 +7,7 @@ services:
 #      MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: pako
       MYSQL_PASSWORD: rek
-#      MYSQL_DATABASE: ELI
+      MYSQL_DATABASE: ELI
 #  adminer:
 #    image: adminer
 #    restart: always
@@ -17,7 +17,7 @@ services:
   eli_api:
     build: .
     ports:
-      - 3000:3000
+      - 4300:4300
     depends_on:
       - db
 #    command: ["./wait-for-it.sh", "mysql:3306"]
