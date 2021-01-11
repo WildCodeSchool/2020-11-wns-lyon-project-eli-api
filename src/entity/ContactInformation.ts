@@ -1,9 +1,6 @@
 import {Field, InputType, ObjectType} from "type-graphql";
-import {Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable} from "typeorm";
-import {IsAlpha, IsAlphanumeric, IsNotEmpty, IsOptional, Length} from "class-validator";
-import {User} from "./User";
-import {Upload} from "./Upload";
-import {Evaluation} from "./Evaluation";
+import {Entity, BaseEntity, Column, PrimaryGeneratedColumn} from "typeorm";
+import {IsAlpha, IsAlphanumeric, IsNotEmpty, IsOptional} from "class-validator";
 
 @ObjectType('ContactInformation')
 @InputType('ContactInformationInput')
@@ -13,36 +10,33 @@ export class ContactInformation extends BaseEntity {
     id!: number;
 
     @Field()
-    @Column()
+    @Column({ type: "varchar", width: 35 })
     @IsAlphanumeric()
     @IsNotEmpty()
     adress_1!: string;
 
     @Field()
-    @Column()
+    @Column({ type: "varchar", width: 35 })
     @IsAlphanumeric()
     @IsOptional()
     adress_2!: string;
 
     @Field()
-    @Column()
+    @Column({ type: "varchar", width: 35 })
     @IsAlphanumeric()
     @IsOptional()
     adress_3!: string;
 
     @Field()
-    @Column()
+    @Column({ type: "varchar", width: 35 })
     @IsAlpha()
     @IsNotEmpty()
     city!: string;
 
     @Field()
-    @Column()
+    @Column({ type: "varchar", width: 70 })
     @IsAlpha()
     @IsNotEmpty()
     country!: string;
-
-    @ManyToOne(() => User, user => user.courses)
-    user!: User;
 }
 
