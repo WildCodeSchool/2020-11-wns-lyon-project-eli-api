@@ -10,7 +10,7 @@ export class Speciality extends BaseEntity {
     id!: number;
 
     @Field()
-    @Column()
+    @Column({type: "varchar", width: 50})
     @Length(2, 50,
         { message: 'The speciality must be at least 2 but not longer than 50 characters' })
     name!: string;
