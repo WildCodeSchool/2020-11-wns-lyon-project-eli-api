@@ -38,12 +38,12 @@ export class User extends BaseEntity {
     password!: string;
 
     @Field()
-    @Column({ type: "varchar", width: 50 })
+    @Column({ type: "varchar", width: 35 })
     @IsNotEmpty({ message: 'The firstname is required' })
     firstName!: string;
 
     @Field()
-    @Column({ type: "varchar", width: 50 })
+    @Column({ type: "varchar", width: 35 })
     @IsNotEmpty({ message: 'The lastname is required' })
     lastName!: string;
 
