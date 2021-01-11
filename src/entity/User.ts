@@ -27,30 +27,28 @@ export class User extends BaseEntity {
     id!: number;
 
     @Field()
-    @Column({ unique: true })
+    @Column({ unique: true, type: "varchar", width: 50 })
     @IsEmail({}, { message: 'Incorrect email' })
     email!: string;
 
     @Field()
-    @Column()
+    @Column({ type: "varchar", width: 255 })
     @Length(6, 30,
         { message: 'The password must be at least 6 but not longer than 30 characters' })
     password!: string;
 
     @Field()
-    @Column()
-    @IsString()
+    @Column({ type: "varchar", width: 50 })
     @IsNotEmpty({ message: 'The firstname is required' })
     firstName!: string;
 
     @Field()
-    @Column()
-    @IsString()
+    @Column({ type: "varchar", width: 50 })
     @IsNotEmpty({ message: 'The lastname is required' })
     lastName!: string;
 
     @Field()
-    @Column()
+    @Column({ type: "varchar", width: 11 })
     @IsNotEmpty({ message: 'The role is required' })
     role!: ROLE;
 
@@ -60,7 +58,7 @@ export class User extends BaseEntity {
 
     // for student
     @ManyToOne(() => Promotion, promotion => promotion.users)
-    promotion!: Promotion;
+    promotionID!: number;
 
     @ManyToMany(() => Evaluation)
     @JoinTable({ name: 'student_has_evaluations' })
