@@ -21,13 +21,13 @@ export class Evaluation extends BaseEntity {
     id!: number;
 
     @Field()
-    @Column({ type: "varchar", width: 120 })
+    @Column({ type: "varchar", length: 120 })
     @Length(2, 120,
         { message: 'The title must be at least 2 but not longer than 120 characters' })
     title!: string;
 
     @Field()
-    @Column({ type: "varchar", width: 120 })
+    @Column({ type: "varchar", length: 120 })
     @IsOptional()
     @Length(2, 120,
         { message: 'The title must be at least 1 but not longer than 120 characters' })
@@ -58,7 +58,7 @@ export class Evaluation extends BaseEntity {
     uploads!: Upload[];
 
     @ManyToOne(() => User, user => user.teacher_evaluations)
-    userID!: number;
+    user!: number;
 
     @CreateDateColumn({type: "timestamp"})
     createdAt!: Date;

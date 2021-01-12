@@ -10,31 +10,31 @@ export class ContactInformation extends BaseEntity {
     id!: number;
 
     @Field()
-    @Column({ type: "varchar", width: 35 })
+    @Column({ type: "varchar", length: 35 })
     @IsAlphanumeric()
     @IsNotEmpty()
     adress_1!: string;
 
     @Field()
-    @Column({ type: "varchar", width: 35 })
+    @Column({ type: "varchar", length: 35 })
     @IsAlphanumeric()
     @IsOptional()
     adress_2!: string;
 
     @Field()
-    @Column({ type: "varchar", width: 35 })
+    @Column({ type: "varchar", length: 35 })
     @IsAlphanumeric()
     @IsOptional()
     adress_3!: string;
 
     @Field()
-    @Column({ type: "varchar", width: 35 })
+    @Column({ type: "varchar", length: 35 })
     @IsAlpha()
     @IsNotEmpty()
     city!: string;
 
     @Field()
-    @Column({ type: "varchar", width: 70 })
+    @Column({ type: "varchar", length: 70 })
     @IsAlpha()
     @IsNotEmpty()
     country!: string;

@@ -9,7 +9,7 @@ import {
     JoinTable,
     CreateDateColumn, UpdateDateColumn
 } from "typeorm";
-import {IsNotEmpty, Length} from "class-validator";
+import {Length} from "class-validator";
 import {User} from "./User";
 import {Course} from "./Course";
 
@@ -21,12 +21,12 @@ export class Promotion extends BaseEntity {
     id!: number;
 
     @Field()
-    @Column({type: "varchar", width: 70})
+    @Column({type: "varchar", length: 70})
     @Length(1, 70,
         { message: 'The promotion must be at least 1 but not longer than 70 characters' })
     name!: string;
 
-    @OneToMany(() => User, user => user.promotionID)
+    @OneToMany(() => User, user => user.promotion)
     users!: User[];
 
     @ManyToMany(() => Course)

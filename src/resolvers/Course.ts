@@ -21,10 +21,10 @@ export class CourseResolver {
     @Authorized('TEACHER')
     @Mutation(() => Course)
     public async createCourse(@Arg('values', () => Course) values: Course, @Ctx() ctx): Promise<Course | void> {
-        const user = ctx.user;
+        const userID = ctx.user.id;
         const newCourse = this.courseRepo.create({
             ...values,
-            user
+            userID
         });
 
         return await this.courseRepo.save(newCourse).catch((e) => console.log('course save error', e));

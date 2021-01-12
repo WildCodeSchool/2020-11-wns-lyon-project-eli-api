@@ -22,13 +22,13 @@ export class Course extends BaseEntity {
     id!: number;
 
     @Field()
-    @Column({ type: "varchar", width: 120 })
+    @Column({ type: "varchar", length: 120 })
     @Length(2, 120,
         { message: 'The title must be at least 2 but not longer than 120 characters' })
     title!: string;
 
     @Field()
-    @Column({ type: "varchar", width: 120 })
+    @Column({ type: "varchar", length: 120 })
     @IsOptional()
     @Length(1, 120,
         { message: 'The subtitle must be at least 1 but not longer than 120 characters' })
@@ -46,7 +46,7 @@ export class Course extends BaseEntity {
     updatedAt!: Date;
 
     @ManyToOne(() => User, user => user.courses)
-    userID!: number;
+    user!: number;
 
     @ManyToMany(() => Upload)
     @JoinTable({ name: 'course_has_uploads' })
