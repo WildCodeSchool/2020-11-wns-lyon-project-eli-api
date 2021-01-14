@@ -40,7 +40,7 @@ const startServer = async () => {
     const schema = await buildSchema({
         resolvers: [UserResolver, CourseResolver],
         authChecker: passwordAuthChecker,
-
+        nullableByDefault: true
     });
 
     const app = Express()

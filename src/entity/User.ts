@@ -67,10 +67,10 @@ export class User extends BaseEntity {
     ////
 
     // for teacher
-    @OneToMany(() => Course, course => course.userID)
+    @OneToMany(() => Course, course => course.user)
     courses!: Course[];
 
-    @OneToMany(() => Evaluation, evaluation => evaluation.userID)
+    @OneToMany(() => Evaluation, evaluation => evaluation.user)
     teacher_evaluations!: Evaluation[];
 
     @ManyToMany(() => Promotion)

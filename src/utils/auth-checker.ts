@@ -18,10 +18,8 @@ export const passwordAuthChecker: AuthChecker = async ({context}: any, roles) =>
             if (roles.length === 0) {
                 return connectedUser !== undefined;
             }
-            if (roles.includes(connectedUser.role)) {
-                return true;
-            }
-            return false
+            return roles.includes(connectedUser.role);
+
         }
         return false
     } catch {

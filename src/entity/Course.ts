@@ -9,7 +9,7 @@ import {
     JoinTable,
     CreateDateColumn, UpdateDateColumn
 } from "typeorm";
-import {IsOptional, Length} from "class-validator";
+import {Length} from "class-validator";
 import {User} from "./User";
 import {Upload} from "./Upload";
 import {Evaluation} from "./Evaluation";
@@ -21,23 +21,21 @@ export class Course extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Field()
+    @Field({ nullable: false })
     @Column({ type: "varchar", length: 120 })
     @Length(2, 120,
         { message: 'The title must be at least 2 but not longer than 120 characters' })
     title!: string;
 
     @Field()
-    @Column({ type: "varchar", length: 120 })
-    @IsOptional()
+    @Column({ type: "varchar", length: 120, nullable: true })
     @Length(1, 120,
         { message: 'The subtitle must be at least 1 but not longer than 120 characters' })
-    subtitle!: string;
+    subtitle?: string;
 
-    @Field()
-    @Column({ type: "text" })
-    @IsOptional()
-    content!: string;
+    @Field(type => String, { defaultValue: null})
+    @Column({ type: "text", nullable: true  })
+    content?: string | null;
 
     @CreateDateColumn({type: "timestamp"})
     createdAt!: Date;
@@ -45,7 +43,7 @@ export class Course extends BaseEntity {
     @UpdateDateColumn({type: "timestamp"})
     updatedAt!: Date;
 
-    @ManyToOne(() => User, user => user.courses)
+    @ManyToOne(() => User, user => user.courses, { nullable: false })
     user!: number;
 
     @ManyToMany(() => Upload)
