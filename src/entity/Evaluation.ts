@@ -20,44 +20,43 @@ export class Evaluation extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Field()
+    @Field({ nullable: false})
     @Column({ type: "varchar", length: 120 })
     @Length(2, 120,
         { message: 'The title must be at least 2 but not longer than 120 characters' })
     title!: string;
 
     @Field()
-    @Column({ type: "varchar", length: 120 })
+    @Column({ type: "varchar", length: 120, nullable: true })
     @IsOptional()
     @Length(2, 120,
         { message: 'The title must be at least 1 but not longer than 120 characters' })
-    subtitle!: string;
+    subtitle?: string;
 
-    @Field()
-    @Column({type: "text"})
-    @IsOptional()
-    content!: string;
+    @Field(type => String)
+    @Column({type: "text", nullable: true })
+    content?: string;
 
-    @Field()
-    @Column({type: "tinyint"})
+    @Field({ nullable: false })
+    @Column({type: "tinyint", default: false})
     @IsBoolean()
     is_auto!: boolean;
 
-    @Field()
-    @Column({type: "tinyint"})
+    @Field({ nullable: false })
+    @Column({type: "tinyint", default: false})
     @IsBoolean()
     is_official!: boolean;
 
     @Field()
-    @Column({type: "smallint"})
+    @Column({type: "smallint", nullable: true})
     @IsPositive()
-    max_grade!: number;
+    max_grade?: number;
 
     @ManyToMany(() => Upload)
     @JoinTable({ name: 'evaluation_has_uploads' })
     uploads!: Upload[];
 
-    @ManyToOne(() => User, user => user.teacher_evaluations)
+    @ManyToOne(() => User, user => user.teacher_evaluations, { nullable: false })
     user!: number;
 
     @CreateDateColumn({type: "timestamp"})
