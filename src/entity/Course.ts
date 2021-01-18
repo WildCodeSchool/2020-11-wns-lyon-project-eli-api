@@ -13,6 +13,7 @@ import {Length} from "class-validator";
 import {User} from "./User";
 import {Upload} from "./Upload";
 import {Evaluation} from "./Evaluation";
+import {Speciality} from "./Speciality";
 
 @ObjectType('Course')
 @InputType('CourseInput')
@@ -53,5 +54,9 @@ export class Course extends BaseEntity {
     @ManyToMany(() => Evaluation)
     @JoinTable({ name: 'courses_has_evaluations' })
     evaluations!: Evaluation[];
+
+    @ManyToMany(() => Speciality)
+    @JoinTable({ name: 'courses_has_specialities' })
+    specialities!: Speciality[];
 }
 

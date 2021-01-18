@@ -57,6 +57,7 @@ export class User extends BaseEntity {
     contact_informations!: ContactInformation;
 
     // for student
+
     @ManyToOne(() => Promotion, promotion => promotion.users)
     promotion!: number;
 

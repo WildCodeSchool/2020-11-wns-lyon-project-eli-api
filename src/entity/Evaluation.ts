@@ -12,6 +12,7 @@ import {
 import {IsBoolean, IsOptional, IsPositive, Length} from "class-validator";
 import {User} from "./User";
 import {Upload} from "./Upload";
+import {Speciality} from "./Speciality";
 
 @ObjectType('Evaluation')
 @InputType('EvaluationInput')
@@ -58,6 +59,10 @@ export class Evaluation extends BaseEntity {
 
     @ManyToOne(() => User, user => user.teacher_evaluations, { nullable: false })
     user!: number;
+
+    @ManyToMany(() => Speciality)
+    @JoinTable({ name: 'evaluation_has_specialities' })
+    specialities!: Speciality[];
 
     @CreateDateColumn({type: "timestamp"})
     createdAt!: Date;
