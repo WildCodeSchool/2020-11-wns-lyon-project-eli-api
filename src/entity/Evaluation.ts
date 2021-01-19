@@ -1,73 +1,77 @@
-import {Field, InputType, ObjectType} from "type-graphql";
+import { Field, InputType, ObjectType } from "type-graphql";
 import {
-    Entity,
-    BaseEntity,
-    Column,
-    PrimaryGeneratedColumn,
-    ManyToMany,
-    JoinTable,
-    ManyToOne,
-    CreateDateColumn, UpdateDateColumn
+  Entity,
+  BaseEntity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from "typeorm";
-import {IsBoolean, IsOptional, IsPositive, Length} from "class-validator";
-import {User} from "./User";
-import {Upload} from "./Upload";
-import {Speciality} from "./Speciality";
+import { IsBoolean, IsOptional, IsPositive, Length } from "class-validator";
+import { User } from "./User";
+import { Upload } from "./Upload";
+import { Speciality } from "./Speciality";
 
-@ObjectType('Evaluation')
-@InputType('EvaluationInput')
+@ObjectType("Evaluation")
+@InputType("EvaluationInput")
 @Entity()
 export class Evaluation extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id!: number;
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-    @Field({ nullable: false})
-    @Column({ type: "varchar", length: 120 })
-    @Length(2, 120,
-        { message: 'The title must be at least 2 but not longer than 120 characters' })
-    title!: string;
+  @Field({ nullable: false })
+  @Column({ type: "varchar", length: 120 })
+  @Length(2, 120, {
+    message: "The title must be at least 2 but not longer than 120 characters",
+  })
+  title!: string;
 
-    @Field()
-    @Column({ type: "varchar", length: 120, nullable: true })
-    @IsOptional()
-    @Length(2, 120,
-        { message: 'The title must be at least 1 but not longer than 120 characters' })
-    subtitle?: string;
+  @Field()
+  @Column({ type: "varchar", length: 120, nullable: true })
+  @IsOptional()
+  @Length(2, 120, {
+    message: "The title must be at least 1 but not longer than 120 characters",
+  })
+  subtitle?: string;
 
-    @Field(type => String)
-    @Column({type: "text", nullable: true })
-    content?: string;
+  @Field(() => String)
+  @Column({ type: "text", nullable: true })
+  content?: string;
 
-    @Field({ nullable: false })
-    @Column({type: "tinyint", default: false})
-    @IsBoolean()
-    is_auto!: boolean;
+  @Field({ nullable: false })
+  @Column({ type: "tinyint", default: false })
+  @IsBoolean()
+  is_auto!: boolean;
 
-    @Field({ nullable: false })
-    @Column({type: "tinyint", default: false})
-    @IsBoolean()
-    is_official!: boolean;
+  @Field({ nullable: false })
+  @Column({ type: "tinyint", default: false })
+  @IsBoolean()
+  is_official!: boolean;
 
-    @Field()
-    @Column({type: "smallint", nullable: true})
-    @IsPositive()
-    max_grade?: number;
+  @Field()
+  @Column({ type: "smallint", nullable: true })
+  @IsPositive()
+  max_grade?: number;
 
-    @ManyToMany(() => Upload)
-    @JoinTable({ name: 'evaluation_has_uploads' })
-    uploads!: Upload[];
+  @ManyToMany(() => Upload)
+  @JoinTable({ name: "evaluation_has_uploads" })
+  uploads!: Upload[];
 
-    @ManyToOne(() => User, user => user.teacher_evaluations, { nullable: false })
-    user!: number;
+  @ManyToOne(() => User, (user) => user.teacher_evaluations, {
+    nullable: false,
+  })
+  user!: number;
 
-    @ManyToMany(() => Speciality)
-    @JoinTable({ name: 'evaluation_has_specialities' })
-    specialities!: Speciality[];
+  @ManyToMany(() => Speciality)
+  @JoinTable({ name: "evaluation_has_specialities" })
+  specialities!: Speciality[];
 
-    @CreateDateColumn({type: "timestamp"})
-    createdAt!: Date;
+  @CreateDateColumn({ type: "timestamp" })
+  createdAt!: Date;
 
-    @UpdateDateColumn({type: "timestamp"})
-    updatedAt!: Date;
+  @UpdateDateColumn({ type: "timestamp" })
+  updatedAt!: Date;
 }
-

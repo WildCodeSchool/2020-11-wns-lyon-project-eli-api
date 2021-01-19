@@ -1,16 +1,27 @@
-import * as jwt from 'jsonwebtoken';
+import * as jwt from "jsonwebtoken";
 
 // const JWT_SECRET = process.env.SECRET;
-const JWT_SECRET = 'secret';
+const JWT_SECRET = "secret";
 const EXPIRES_IN = 3600 * 24;
 
-export function generateJwt(data: any): string {
-    return jwt.sign(data, JWT_SECRET, {
-        algorithm: 'HS256',
-        expiresIn: EXPIRES_IN,
-    });
+export type dataType = {
+  userId: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+};
+
+export function generateJwt(data: dataType): string {
+  return jwt.sign(data, JWT_SECRET, {
+    algorithm: "HS256",
+    expiresIn: EXPIRES_IN,
+  });
 }
 
-export function decodeJwt(token): any {
-    return jwt.verify(token, JWT_SECRET);
+export function decodeJwt(token: string): dataType | string {
+  const decoded = jwt.verify(token, JWT_SECRET);
+  if (typeof decoded === "string") return decoded;
+  const { userId, email, firstName, lastName, role } = decoded as dataType;
+  return { userId, email, firstName, lastName, role };
 }
