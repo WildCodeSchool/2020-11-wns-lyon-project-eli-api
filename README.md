@@ -12,4 +12,3 @@ Steps to run this project:
 
 [__Github__ - typescript-eslint](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/README.md)
 
-[__NPM__ - eslint-plugin-node](https://www.npmjs.com/package/eslint-plugin-node)
