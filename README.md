@@ -10,6 +10,6 @@ Steps to run this project:
 ## Linter
 [__ESLint__](https://eslint.org/docs/user-guide/getting-started)
 
-[__Github__ - typescript-eslint](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/README.md)
+[__Typescript-eslint__](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/README.md)
 
-[__NPM__ - eslint-plugin-node](https://www.npmjs.com/package/eslint-plugin-node)
+[__Prettier__](https://prettier.io/docs/en/install.html)

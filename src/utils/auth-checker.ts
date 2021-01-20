@@ -1,16 +1,16 @@
-import { AuthChecker } from "type-graphql";
-import { getManager } from "typeorm";
-import { dataType, decodeJwt } from "./helpers";
-import { User } from "../entity/User";
+import { AuthChecker } from 'type-graphql';
+import { getManager } from 'typeorm';
+import { dataType, decodeJwt } from './helpers';
+import { User } from '../entity/User';
 
 export const passwordAuthChecker: AuthChecker = async (
   { context }: any,
   roles
 ) => {
-  console.log("context passAuth", context);
+  console.log('context passAuth', context);
   // `roles` comes from the `@Authorized` decorator, eg. ["ADMIN", "MODERATOR"]
   try {
-    const token = context.req.headers.authorization.split("Bearer ")[1];
+    const token = context.req.headers.authorization.split('Bearer ')[1];
 
     if (token) {
       const manager = getManager();
@@ -18,7 +18,7 @@ export const passwordAuthChecker: AuthChecker = async (
       const data: dataType | string = decodeJwt(token);
       // 6 next lines aren't ok : need to manage string case
       let userID: number;
-      if (typeof data === "string") {
+      if (typeof data === 'string') {
         userID = +data;
       } else {
         userID = data.userId;

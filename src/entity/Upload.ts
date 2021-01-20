@@ -1,4 +1,4 @@
-import { Field, InputType, ObjectType } from "type-graphql";
+import { Field, InputType, ObjectType } from 'type-graphql';
 import {
   Entity,
   BaseEntity,
@@ -6,11 +6,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-} from "typeorm";
-import { IsUrl } from "class-validator";
+} from 'typeorm';
+import { IsUrl } from 'class-validator';
 
-@ObjectType("Upload")
-@InputType("UploadInput")
+@ObjectType('Upload')
+@InputType('UploadInput')
 @Entity()
 export class Upload extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -21,9 +21,9 @@ export class Upload extends BaseEntity {
   @IsUrl()
   url!: string;
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date;
 }

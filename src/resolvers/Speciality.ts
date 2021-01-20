@@ -1,6 +1,6 @@
-import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import { Speciality } from "../entity/Speciality";
-import { getRepository } from "typeorm";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { Speciality } from '../entity/Speciality';
+import { getRepository } from 'typeorm';
 
 @Resolver(Speciality)
 export class UserResolver {
@@ -14,7 +14,7 @@ export class UserResolver {
 
   @Mutation(() => Speciality)
   public async createSpeciality(
-    @Arg("name") name: string
+    @Arg('name') name: string
   ): Promise<Speciality> {
     const newSpeciality = this.specialityRepo.create({
       name,

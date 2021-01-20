@@ -1,6 +1,6 @@
-import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import { Course } from "../entity/Course";
-import { getRepository } from "typeorm";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { Course } from '../entity/Course';
+import { getRepository } from 'typeorm';
 
 @Resolver(Course)
 export class CourseResolver {
@@ -12,17 +12,17 @@ export class CourseResolver {
   }
 
   @Query(() => Course)
-  public async getCourse(@Arg("id") id: number): Promise<Course | void> {
+  public async getCourse(@Arg('id') id: number): Promise<Course | void> {
     return await this.courseRepo.findOne({ where: { id } });
   }
 
-  @Authorized("TEACHER")
+  @Authorized('TEACHER')
   @Mutation(() => Course)
   public async createCourse(
-    @Arg("values", () => Course) values: Course,
+    @Arg('values', () => Course) values: Course,
     @Ctx() ctx
   ): Promise<Course | void> {
-    console.log("context", ctx);
+    console.log('context', ctx);
     const user = ctx.user;
     const newCourse = this.courseRepo.create({
       ...values,
@@ -31,14 +31,14 @@ export class CourseResolver {
 
     return await this.courseRepo
       .save(newCourse)
-      .catch((e) => console.log("course save error", e));
+      .catch((e) => console.log('course save error', e));
   }
 
-  @Authorized("TEACHER")
+  @Authorized('TEACHER')
   @Mutation(() => Course)
   public async updateCourse(
-    @Arg("id") id: number,
-    @Arg("values") values: Course,
+    @Arg('id') id: number,
+    @Arg('values') values: Course,
     @Ctx() ctx
   ): Promise<Course> {
     const course = await this.courseRepo.findOne({
@@ -56,18 +56,18 @@ export class CourseResolver {
   }
 
   @Mutation(() => Boolean)
-  public async deleteCourse(@Arg("id") id: number): Promise<boolean> {
+  public async deleteCourse(@Arg('id') id: number): Promise<boolean> {
     const course = await this.courseRepo.findOne({ where: { id } });
 
     if (!course) {
-      throw new Error("Course not found !");
+      throw new Error('Course not found !');
     }
 
     try {
       await this.courseRepo.remove(course);
       return true;
     } catch (err) {
-      throw new Error("you are not allowed to delete this course");
+      throw new Error('you are not allowed to delete this course');
     }
   }
 }

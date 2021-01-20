@@ -1,9 +1,9 @@
-import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import { AuthResult } from "../entity/AuthResult";
-import { User } from "../entity/User";
-import * as bcrypt from "bcrypt";
-import { generateJwt } from "../utils/helpers";
-import { getRepository } from "typeorm";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { AuthResult } from '../entity/AuthResult';
+import { User } from '../entity/User';
+import * as bcrypt from 'bcrypt';
+import { generateJwt } from '../utils/helpers';
+import { getRepository } from 'typeorm';
 
 @Resolver(User)
 export class UserResolver {
@@ -30,8 +30,8 @@ export class UserResolver {
 
   @Mutation(() => AuthResult, { nullable: true })
   public async authenticate(
-    @Arg("email") email: string,
-    @Arg("password") password: string
+    @Arg('email') email: string,
+    @Arg('password') password: string
     // @Ctx() ctx
   ): Promise<AuthResult> {
     const user = await this.userRepo.findOneOrFail({ email });
@@ -53,13 +53,13 @@ export class UserResolver {
 
   @Mutation(() => User)
   public async createUser(
-    @Arg("values", () => User) values: User
+    @Arg('values', () => User) values: User
   ): Promise<User | void> {
     const hash = await UserResolver.hashPassword(values.password);
     const user = this.userRepo.create({ ...values, password: hash });
 
     return await this.userRepo
       .save(user)
-      .catch((err) => console.log("save error", err));
+      .catch((err) => console.log('save error', err));
   }
 }
