@@ -69,35 +69,37 @@ export class UserResolver {
     @Arg('id') id: number,
     @Arg('values') values: User,
     @Ctx() ctx,
-  ): Promise<Course> {
-    const user = await this.userRepo.findOne({
-      where: { id, user: ctx.user },
+  ): Promise<User> {
+    const user: User | undefined = await this.userRepo.findOne({
+      where: { id: id}
     });
 
-    if (!course) {
+    console.log("updateUser", user);
+
+    if (!user) {
       throw new Error(
-        'Course not found or you\'re not authorize to update the course !',
+        'User not found or you\'re not authorize to update them !',
       );
     }
-    const updatedCourse = Object.assign(course, values);
+    const updatedUser: User = Object.assign(user, values);
 
-    return await this.courseRepo.save(updatedCourse);
+    return await this.userRepo.save(updatedUser);
   }
 
-  @Mutation(() => Boolean)
-  public async deleteCourse(@Arg('id') id: number): Promise<boolean> {
-    const course = await this.courseRepo.findOne({ where: { id } });
-
-    if (!course) {
-      throw new Error('Course not found !');
-    }
-
-    try {
-      await this.courseRepo.remove(course);
-      return true;
-    } catch (err) {
-      throw new Error('you are not allowed to delete this course');
-    }
-  }
+  // @Mutation(() => Boolean)
+  // public async deleteCourse(@Arg('id') id: number): Promise<boolean> {
+  //   const course = await this.courseRepo.findOne({ where: { id } });
+  //
+  //   if (!course) {
+  //     throw new Error('Course not found !');
+  //   }
+  //
+  //   try {
+  //     await this.courseRepo.remove(course);
+  //     return true;
+  //   } catch (err) {
+  //     throw new Error('you are not allowed to delete this course');
+  //   }
+  // }
 
 }
