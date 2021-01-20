@@ -43,7 +43,8 @@
       "lint-fix": "eslint --fix . ",
       "dev": "ts-node-dev --transpile-only --respawn  ./src/index.ts",
       "prod": "tsc && node ./built/src/server.js",
-      "debug": "tsc && node --inspect ./built/src/server.js"
+      "debug": "tsc && node --inspect ./built/src/server.js",
+      "prettier": "prettier --write ./src"
    },
    "node/no-unsupported-features/es-syntax": [
       "error",
