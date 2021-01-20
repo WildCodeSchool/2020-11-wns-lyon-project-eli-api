@@ -86,20 +86,20 @@ export class UserResolver {
     return await this.userRepo.save(updatedUser);
   }
 
-  // @Mutation(() => Boolean)
-  // public async deleteCourse(@Arg('id') id: number): Promise<boolean> {
-  //   const course = await this.courseRepo.findOne({ where: { id } });
-  //
-  //   if (!course) {
-  //     throw new Error('Course not found !');
-  //   }
-  //
-  //   try {
-  //     await this.courseRepo.remove(course);
-  //     return true;
-  //   } catch (err) {
-  //     throw new Error('you are not allowed to delete this course');
-  //   }
-  // }
+  @Mutation(() => Boolean)
+  public async deleteUser(@Arg('id') id: number): Promise<boolean> {
+    const user = await this.userRepo.findOne({ where: { id } });
+
+    if (!user) {
+      throw new Error('User not found !');
+    }
+
+    try {
+      await this.userRepo.remove(user);
+      return true;
+    } catch (err) {
+      throw new Error('you are not allowed to delete this user');
+    }
+  }
 
 }
