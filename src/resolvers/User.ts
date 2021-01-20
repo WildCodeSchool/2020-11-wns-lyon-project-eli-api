@@ -4,6 +4,7 @@ import { User } from '../entity/User';
 import * as bcrypt from 'bcrypt';
 import { generateJwt } from '../utils/helpers';
 import { getRepository } from 'typeorm';
+import { Course } from '../entity/Course';
 
 @Resolver(User)
 export class UserResolver {
@@ -62,4 +63,41 @@ export class UserResolver {
       .save(user)
       .catch((err) => console.log('save error', err));
   }
+
+  @Mutation(() => User)
+  public async updateUser(
+    @Arg('id') id: number,
+    @Arg('values') values: User,
+    @Ctx() ctx,
+  ): Promise<Course> {
+    const user = await this.userRepo.findOne({
+      where: { id, user: ctx.user },
+    });
+
+    if (!course) {
+      throw new Error(
+        'Course not found or you\'re not authorize to update the course !',
+      );
+    }
+    const updatedCourse = Object.assign(course, values);
+
+    return await this.courseRepo.save(updatedCourse);
+  }
+
+  @Mutation(() => Boolean)
+  public async deleteCourse(@Arg('id') id: number): Promise<boolean> {
+    const course = await this.courseRepo.findOne({ where: { id } });
+
+    if (!course) {
+      throw new Error('Course not found !');
+    }
+
+    try {
+      await this.courseRepo.remove(course);
+      return true;
+    } catch (err) {
+      throw new Error('you are not allowed to delete this course');
+    }
+  }
+
 }
