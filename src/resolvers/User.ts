@@ -4,7 +4,6 @@ import { User } from '../entity/User';
 import * as bcrypt from 'bcrypt';
 import { generateJwt } from '../utils/helpers';
 import { getRepository } from 'typeorm';
-import { Course } from '../entity/Course';
 
 @Resolver(User)
 export class UserResolver {
@@ -67,18 +66,18 @@ export class UserResolver {
   @Mutation(() => User)
   public async updateUser(
     @Arg('id') id: number,
-    @Arg('values') values: User,
-    @Ctx() ctx,
+    @Arg('values') values: User
+    // @Ctx() ctx
   ): Promise<User> {
     const user: User | undefined = await this.userRepo.findOne({
-      where: { id: id}
+      where: { id: id },
     });
 
-    console.log("updateUser", user);
+    console.log('updateUser', user);
 
     if (!user) {
       throw new Error(
-        'User not found or you\'re not authorize to update them !',
+        "User not found or you're not authorize to update them !"
       );
     }
     const updatedUser: User = Object.assign(user, values);
@@ -101,5 +100,4 @@ export class UserResolver {
       throw new Error('you are not allowed to delete this user');
     }
   }
-
 }

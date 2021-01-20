@@ -20,7 +20,7 @@ export class CourseResolver {
   @Mutation(() => Course)
   public async createCourse(
     @Arg('values', () => Course) values: Course,
-    @Ctx() ctx,
+    @Ctx() ctx
   ): Promise<Course | void> {
     const user = ctx.user;
     const newCourse = this.courseRepo.create({
@@ -38,7 +38,7 @@ export class CourseResolver {
   public async updateCourse(
     @Arg('id') id: number,
     @Arg('values') values: Course,
-    @Ctx() ctx,
+    @Ctx() ctx
   ): Promise<Course> {
     const course = await this.courseRepo.findOne({
       where: { id, user: ctx.user },
@@ -46,7 +46,7 @@ export class CourseResolver {
 
     if (!course) {
       throw new Error(
-        'Course not found or you\'re not authorize to update the course !',
+        "Course not found or you're not authorize to update the course !"
       );
     }
     const updatedCourse = Object.assign(course, values);
