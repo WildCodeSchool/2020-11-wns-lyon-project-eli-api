@@ -16,12 +16,12 @@ describe('Apollo server', () => {
   beforeEach(async () => {
     if (
       query == null ||
-      (query == undefined && mutate == null) ||
+      query == undefined ||
+      mutate == null ||
       mutate == undefined
     ) {
       await createConnection({
         type: 'mysql',
-        host: process.env.DB_HOST,
         port: 3306,
         username: 'root',
         password: '',
@@ -41,7 +41,7 @@ describe('Apollo server', () => {
           migrationsDir: 'migration',
         },
       });
-      const testClient = createTestClient(await getApolloServer());
+      const testClient = createTestClient((await getApolloServer()) as any);
       query = testClient.query;
       mutate = testClient.mutate;
     }
@@ -63,12 +63,20 @@ describe('Apollo server', () => {
       expect(response.data).toMatchObject({
         getCourses: [
           {
+            title: 'test 2',
+            subtitle: 'test test 2',
+          },
+          {
             title: 'test',
             subtitle: 'test test',
           },
           {
-            title: 'test 2',
-            subtitle: 'test test 2',
+            title: 'test 3',
+            subtitle: 'test test 3',
+          },
+          {
+            title: 'test 4',
+            subtitle: 'test test 4',
           },
         ],
       });
@@ -76,7 +84,7 @@ describe('Apollo server', () => {
   });
 
   describe('getCourse id query', () => {
-    it('read course id ', async () => {
+    it('read course by id ', async () => {
       const response = await query({
         query: `
           query {
@@ -91,9 +99,9 @@ describe('Apollo server', () => {
 
       expect(response.data).toMatchObject({
         getCourse: {
-          title: 'test 2',
-          subtitle: 'test test 2',
-          content: 'test test test 2',
+          title: 'test 4',
+          subtitle: 'test test 4',
+          content: 'test test test 4',
         },
       });
     });
@@ -104,13 +112,13 @@ describe('Apollo server', () => {
       const response = await mutate({
         mutation: `
           mutation {
-            deleteCourse(id: 5)
+            deleteCourse(id: 2)
           }
         `,
       });
 
       expect(response.data).toMatchObject({
-        deleteCourse: null,
+        deleteCourse: true,
       });
     });
   });
@@ -126,7 +134,61 @@ describe('Apollo server', () => {
       });
 
       expect(response.data).toMatchObject({
-        deleteUser: null,
+        deleteUser: true,
+      });
+    });
+  });
+
+  describe('create user damien', () => {
+    it('create 1 user damien', async () => {
+      const response = await mutate({
+        mutation: `
+          mutation  {
+            createUser(values: {
+              email: "aaabbb@gmail.com",
+              password: "damien",
+              firstName : "Damien",
+              lastName: "Da Silva Bregieiro",
+              role: "TEACHER"
+            }){
+              email
+            }
+          }
+        `,
+      });
+
+      expect(response.data).toMatchObject({
+        createUser: {
+          email: 'aaabbb@gmail.com',
+        },
+      });
+    });
+  });
+
+  describe('update user 1', () => {
+    it('update user with data', async () => {
+      const response = await mutate({
+        mutation: `
+          mutation  {
+            updateUser(values: {
+              email: "test@test.com",
+              firstName: "Test update",
+              lastName: "last Test"
+            }, id: 1) {
+              email,
+              firstName,
+              lastName
+            }
+          }
+        `,
+      });
+
+      expect(response.data).toMatchObject({
+        updateUser: {
+          email: 'test@test.com',
+          firstName: 'Test update',
+          lastName: 'last Test',
+        },
       });
     });
   });

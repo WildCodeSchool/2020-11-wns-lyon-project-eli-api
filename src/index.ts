@@ -1,22 +1,16 @@
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
-import { buildSchema } from 'type-graphql';
 import cors = require('cors');
 import cookieParser = require('cookie-parser');
 import { User } from './entity/User';
-import { UserResolver } from './resolvers/User';
 import { Course } from './entity/Course';
 import { Promotion } from './entity/Promotion';
 import { Speciality } from './entity/Speciality';
 import { Upload } from './entity/Upload';
 import { Evaluation } from './entity/Evaluation';
 import { ContactInformation } from './entity/ContactInformation';
-import { CourseResolver } from './resolvers/Course';
-import { passwordAuthChecker } from './utils/auth-checker';
 
 import { getApolloServer } from './getApolloServer';
-
-import { ApolloServer } from 'apollo-server-express';
 import Express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
