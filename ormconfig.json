@@ -2,14 +2,12 @@
    "type": "mysql",
    "host": "localhost",
    "port": 3306,
-   "username": "pako",
-   "password": "rek",
+   "username": "root",
+   "password": "rootuser",
    "database": "ELI",
    "synchronize": true,
    "logging": false,
-   "entities": [
-      "src/entity/**/*.ts"
-   ],
+   "entities": ["dist/**/*.entity.js"],
    "migrations": [
       "src/migration/**/*.ts"
    ],

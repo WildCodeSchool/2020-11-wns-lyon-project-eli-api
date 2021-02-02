@@ -1,3 +1,1 @@
-export type TeacherInput = {
-
-}
+// export type TeacherInput = {};
