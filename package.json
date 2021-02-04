@@ -45,7 +45,8 @@
   },
   "scripts": {
     "start": "npm run dev",
-    "test": "jest --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "build": "tsc",
     "lint": "eslint . ",
     "lint-fix": "eslint --fix . ",
