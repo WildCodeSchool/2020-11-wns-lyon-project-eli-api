@@ -22,6 +22,8 @@ import { ContactInformation } from './ContactInformation';
 
 export type ROLE = 'TEACHER' | 'STUDENT';
 
+import DbAwareColumn from './decoratorConverter';
+
 @ObjectType('User')
 @InputType('UserInput')
 @Entity()
@@ -90,9 +92,9 @@ export class User extends BaseEntity {
 
   ////
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @DbAwareColumn({ type: 'timestamp', nullable: true })
   createdAt!: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @DbAwareColumn({ type: 'timestamp', nullable: true })
   updatedAt!: Date;
 }

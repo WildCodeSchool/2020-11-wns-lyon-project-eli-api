@@ -14,6 +14,8 @@ import { Length } from 'class-validator';
 import { User } from './User';
 import { Course } from './Course';
 
+import DbAwareColumn from './decoratorConverter';
+
 @ObjectType('Promotion')
 @InputType('PromotionInput')
 @Entity()
@@ -36,9 +38,9 @@ export class Promotion extends BaseEntity {
   @JoinTable({ name: 'promotion_has_courses' })
   courses!: Course[];
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @DbAwareColumn({ type: 'timestamp', nullable: true })
   createdAt!: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @DbAwareColumn({ type: 'timestamp', nullable: true })
   updatedAt!: Date;
 }

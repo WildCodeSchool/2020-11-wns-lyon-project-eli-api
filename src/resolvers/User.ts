@@ -14,10 +14,19 @@ export class UserResolver {
     return await bcrypt.hash(password, salt);
   }
 
+  @Query(() => [User])
+  public async getUsers(): Promise<User[]> {
+    return await this.userRepo.find();
+  }
+
+  @Query(() => User)
+  public async getUser(@Arg('id') id: number): Promise<User | void> {
+    return await this.userRepo.findOne({ where: { id } });
+  }
+
   @Query(() => User)
   @Authorized()
   public async authenticatedUser(@Ctx() ctx): Promise<User> {
-    console.log();
     return ctx.user;
   }
 
@@ -73,7 +82,7 @@ export class UserResolver {
       where: { id: id },
     });
 
-    console.log('updateUser', user);
+    //console.log('updateUser', user);
 
     if (!user) {
       throw new Error(

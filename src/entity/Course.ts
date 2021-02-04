@@ -9,12 +9,16 @@ import {
   JoinTable,
   CreateDateColumn,
   UpdateDateColumn,
+  ColumnType,
+  ColumnOptions,
 } from 'typeorm';
 import { Length } from 'class-validator';
 import { User } from './User';
 import { Upload } from './Upload';
 import { Evaluation } from './Evaluation';
 import { Speciality } from './Speciality';
+
+import DbAwareColumn from './decoratorConverter';
 
 @ObjectType('Course')
 @InputType('CourseInput')
@@ -42,10 +46,10 @@ export class Course extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   content?: string | null;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @DbAwareColumn({ type: 'timestamp', nullable: true })
   createdAt!: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @DbAwareColumn({ type: 'timestamp', nullable: true })
   updatedAt!: Date;
 
   @ManyToOne(() => User, (user) => user.courses, { nullable: false })

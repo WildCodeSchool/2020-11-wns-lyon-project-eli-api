@@ -11,132 +11,28 @@ import { Evaluation } from './entity/Evaluation';
 import { ContactInformation } from './entity/ContactInformation';
 
 describe('Apollo server', () => {
-  let query, mutate;
+  let query, mutate, token;
 
-  beforeEach(async () => {
-    if (
-      query == null ||
-      query == undefined ||
-      mutate == null ||
-      mutate == undefined
-    ) {
-      await createConnection({
-        type: 'mysql',
-        port: 3306,
-        username: 'root',
-        password: '',
-        database: 'eli_test',
-        entities: [
-          User,
-          Course,
-          Promotion,
-          Speciality,
-          Upload,
-          Evaluation,
-          ContactInformation,
-        ],
-        synchronize: true,
-        migrations: ['migration/*.ts'],
-        cli: {
-          migrationsDir: 'migration',
-        },
-      });
-      const testClient = createTestClient((await getApolloServer()) as any);
-      query = testClient.query;
-      mutate = testClient.mutate;
-    }
-  });
-
-  describe('getCourses query', () => {
-    it('read courses ', async () => {
-      const response = await query({
-        query: `
-          query {
-            getCourses {
-              title,
-              subtitle
-            }
-          }
-        `,
-      });
-
-      expect(response.data).toMatchObject({
-        getCourses: [
-          {
-            title: 'test 2',
-            subtitle: 'test test 2',
-          },
-          {
-            title: 'test',
-            subtitle: 'test test',
-          },
-          {
-            title: 'test 3',
-            subtitle: 'test test 3',
-          },
-          {
-            title: 'test 4',
-            subtitle: 'test test 4',
-          },
-        ],
-      });
+  beforeAll(async () => {
+    await createConnection({
+      type: 'sqlite',
+      database: ':memory:',
+      dropSchema: true,
+      entities: [
+        User,
+        Course,
+        Promotion,
+        Speciality,
+        Upload,
+        Evaluation,
+        ContactInformation,
+      ],
+      synchronize: true,
+      logging: false,
     });
-  });
-
-  describe('getCourse id query', () => {
-    it('read course by id ', async () => {
-      const response = await query({
-        query: `
-          query {
-            getCourse(id: 4) {
-              title,
-              subtitle,
-              content
-            }
-          }
-        `,
-      });
-
-      expect(response.data).toMatchObject({
-        getCourse: {
-          title: 'test 4',
-          subtitle: 'test test 4',
-          content: 'test test test 4',
-        },
-      });
-    });
-  });
-
-  describe('delete course by id', () => {
-    it('delete course 2', async () => {
-      const response = await mutate({
-        mutation: `
-          mutation {
-            deleteCourse(id: 2)
-          }
-        `,
-      });
-
-      expect(response.data).toMatchObject({
-        deleteCourse: true,
-      });
-    });
-  });
-
-  describe('delete user by id', () => {
-    it('delete user 1', async () => {
-      const response = await mutate({
-        mutation: `
-          mutation {
-            deleteUser(id: 2)
-          }
-        `,
-      });
-
-      expect(response.data).toMatchObject({
-        deleteUser: true,
-      });
-    });
+    const testClient = createTestClient((await getApolloServer()) as any);
+    query = testClient.query;
+    mutate = testClient.mutate;
   });
 
   describe('create user damien', () => {
@@ -145,13 +41,14 @@ describe('Apollo server', () => {
         mutation: `
           mutation  {
             createUser(values: {
-              email: "aaabbb@gmail.com",
+              email: "damien.bregieiro@gmail.com",
               password: "damien",
               firstName : "Damien",
               lastName: "Da Silva Bregieiro",
               role: "TEACHER"
             }){
-              email
+              email,
+              firstName
             }
           }
         `,
@@ -159,7 +56,8 @@ describe('Apollo server', () => {
 
       expect(response.data).toMatchObject({
         createUser: {
-          email: 'aaabbb@gmail.com',
+          email: 'damien.bregieiro@gmail.com',
+          firstName: 'Damien',
         },
       });
     });
@@ -169,14 +67,17 @@ describe('Apollo server', () => {
     it('update user with data', async () => {
       const response = await mutate({
         mutation: `
-          mutation  {
-            updateUser(values: {
-              email: "test@test.com",
-              firstName: "Test update",
-              lastName: "last Test"
-            }, id: 1) {
-              email,
-              firstName,
+          mutation {
+            updateUser(
+              values: {
+                email: "brice@gmail.com"
+                firstName: "Brice"
+                lastName: "Test"
+              },
+              id: 1
+            ) {
+              email
+              firstName
               lastName
             }
           }
@@ -185,10 +86,123 @@ describe('Apollo server', () => {
 
       expect(response.data).toMatchObject({
         updateUser: {
-          email: 'test@test.com',
-          firstName: 'Test update',
-          lastName: 'last Test',
+          email: 'brice@gmail.com',
+          firstName: 'Brice',
+          lastName: 'Test',
         },
+      });
+    });
+  });
+
+  describe('get user by id', () => {
+    it('get user 1 => brice', async () => {
+      const response = await query({
+        query: `
+          query {
+            getUser(id: 1) {
+              email
+            }
+          }        
+        `,
+      });
+
+      expect(response.data).toMatchObject({
+        getUser: {
+          email: 'brice@gmail.com',
+        },
+      });
+    });
+  });
+
+  describe('Authenticate', () => {
+    it('authenticate brice', async () => {
+      const response = await mutate({
+        mutation: `
+          mutation{
+            authenticate(password: "damien", email: "brice@gmail.com") {
+              token
+              user {
+                email
+                role
+              }
+            }
+          }
+        `,
+      });
+
+      expect(response.data.authenticate.user).toMatchObject({
+        email: 'brice@gmail.com',
+        role: 'TEACHER',
+      });
+    });
+  });
+
+  describe('getCourses query', () => {
+    it('read courses ', async () => {
+      const response = await query({
+        query: `
+          query {
+            getCourses {
+              title,
+              subtitle,
+              content
+            }
+          }
+        `,
+      });
+
+      expect(response.data).toMatchObject({
+        getCourses: [],
+      });
+    });
+  });
+
+  describe('getCourse id query', () => {
+    it('read course by id ', async () => {
+      const response = await query({
+        query: `
+          query {
+            getCourse(id: 1) {
+              title,
+              subtitle,
+              content
+            }
+          }
+        `,
+      });
+
+      expect(response.data).toMatchObject({ getCourse: null });
+    });
+  });
+
+  describe('delete course by id', () => {
+    it('delete course 1', async () => {
+      const response = await mutate({
+        mutation: `
+          mutation {
+            deleteCourse(id: 1)
+          }
+        `,
+      });
+
+      expect(response.data).toMatchObject({
+        deleteCourse: null,
+      });
+    });
+  });
+
+  describe('delete user by id', () => {
+    it('delete user 1', async () => {
+      const response = await mutate({
+        mutation: `
+          mutation {
+            deleteUser(id: 1)
+          }
+        `,
+      });
+
+      expect(response.data).toMatchObject({
+        deleteUser: true,
       });
     });
   });

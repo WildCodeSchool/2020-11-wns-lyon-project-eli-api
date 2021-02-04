@@ -15,6 +15,8 @@ import { User } from './User';
 import { Upload } from './Upload';
 import { Speciality } from './Speciality';
 
+import DbAwareColumn from './decoratorConverter';
+
 @ObjectType('Evaluation')
 @InputType('EvaluationInput')
 @Entity()
@@ -69,9 +71,9 @@ export class Evaluation extends BaseEntity {
   @JoinTable({ name: 'evaluation_has_specialities' })
   specialities!: Speciality[];
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @DbAwareColumn({ type: 'timestamp', nullable: true })
   createdAt!: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @DbAwareColumn({ type: 'timestamp', nullable: true })
   updatedAt!: Date;
 }

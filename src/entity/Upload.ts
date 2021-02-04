@@ -9,6 +9,8 @@ import {
 } from 'typeorm';
 import { IsUrl } from 'class-validator';
 
+import DbAwareColumn from './decoratorConverter';
+
 @ObjectType('Upload')
 @InputType('UploadInput')
 @Entity()
@@ -21,9 +23,9 @@ export class Upload extends BaseEntity {
   @IsUrl()
   url!: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @DbAwareColumn({ type: 'timestamp', nullable: true })
   createdAt!: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @DbAwareColumn({ type: 'timestamp', nullable: true })
   updatedAt!: Date;
 }

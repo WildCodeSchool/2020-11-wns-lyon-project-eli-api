@@ -1,5 +1,6 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Course } from '../entity/Course';
+import { CourseTest } from '../entity/CourseTest';
 import { getRepository } from 'typeorm';
 
 @Resolver(Course)
