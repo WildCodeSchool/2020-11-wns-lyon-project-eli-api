@@ -15,13 +15,12 @@ import { User } from './User';
 import { Upload } from './Upload';
 import { Evaluation } from './Evaluation';
 import { Speciality } from './Speciality';
-import { Answer } from './Answer';
-import { Quiz } from './Quiz';
+import { Question } from './Question';
 
-@ObjectType('Question')
-@InputType('QuestionInput')
+@ObjectType('Answer')
+@InputType('AnswerInput')
 @Entity()
-export class Question extends BaseEntity {
+export class Answer extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -32,14 +31,11 @@ export class Question extends BaseEntity {
   })
   label!: string;
 
-  @OneToMany(() => Answer, (answer) => answer.question)
-  answers?: Answer[];
-
   @Field({ nullable: false })
   @Column({ type: 'tinyint', default: false })
   @IsBoolean()
-  multiple_choice!: boolean;
+  is_correct!: boolean;
 
-  @ManyToOne(() => Quiz, (quiz) => quiz.questions, { nullable: false })
-  quiz!: number;
+  @ManyToOne(() => Question, (question ) => question.answers, { nullable: false })
+  question!: number;
 }
