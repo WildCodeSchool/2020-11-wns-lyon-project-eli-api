@@ -1,8 +1,6 @@
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
-import cors = require('cors');
-import cookieParser = require('cookie-parser');
 import { User } from './entity/User';
 import { UserResolver } from './resolvers/User';
 import { Course } from './entity/Course';
@@ -17,6 +15,9 @@ import { passwordAuthChecker } from './utils/auth-checker';
 import { ApolloServer } from 'apollo-server-express';
 import Express from 'express';
 import dotenv from 'dotenv';
+import cors = require('cors');
+import cookieParser = require('cookie-parser');
+
 dotenv.config();
 
 const startServer = async () => {
