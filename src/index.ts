@@ -20,6 +20,7 @@ import Express from 'express';
 import dotenv from 'dotenv';
 import cors = require('cors');
 import cookieParser = require('cookie-parser');
+import { QuestionResolver } from './resolvers/Question';
 dotenv.config();
 
 const startServer = async () => {
@@ -50,7 +51,7 @@ const startServer = async () => {
   });
 
   const schema = await buildSchema({
-    resolvers: [UserResolver, CourseResolver, QuizResolver],
+    resolvers: [UserResolver, CourseResolver, QuizResolver, QuestionResolver],
     authChecker: passwordAuthChecker,
     nullableByDefault: true,
   });

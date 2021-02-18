@@ -38,7 +38,7 @@ export class Question extends BaseEntity {
   @Field({ nullable: false })
   @Column({ type: 'tinyint', default: false })
   @IsBoolean()
-  multiple_choice!: boolean;
+  multiple_choice?: boolean;
 
   @ManyToOne(() => Quiz, (quiz) => quiz.questions, { nullable: false })
   quiz!: number;
