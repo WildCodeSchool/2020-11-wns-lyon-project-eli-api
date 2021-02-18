@@ -37,7 +37,7 @@ export class QuestionResolver {
       where: { id },
     });
 
-    if (!Question) {
+    if (!question) {
       throw new Error(
         "Question not found or you're not authorize to update this one !"
       );
