@@ -1,23 +1,25 @@
 import 'reflect-metadata';
-import { createConnection } from 'typeorm';
-import { buildSchema } from 'type-graphql';
 import { User } from './entity/User';
-import { UserResolver } from './resolvers/User';
+import { Quiz } from './entity/Quiz';
+import { Answer } from './entity/Answer';
+import { Upload } from './entity/Upload';
 import { Course } from './entity/Course';
+import { Question } from './entity/Question';
 import { Promotion } from './entity/Promotion';
 import { Speciality } from './entity/Speciality';
-import { Upload } from './entity/Upload';
 import { Evaluation } from './entity/Evaluation';
 import { ContactInformation } from './entity/ContactInformation';
 import { CourseResolver } from './resolvers/Course';
+import { UserResolver } from './resolvers/User';
+import { QuizResolver } from './resolvers/Quiz';
 import { passwordAuthChecker } from './utils/auth-checker';
-
+import { createConnection } from 'typeorm';
+import { buildSchema } from 'type-graphql';
 import { ApolloServer } from 'apollo-server-express';
 import Express from 'express';
 import dotenv from 'dotenv';
 import cors = require('cors');
 import cookieParser = require('cookie-parser');
-
 dotenv.config();
 
 const startServer = async () => {
@@ -36,6 +38,9 @@ const startServer = async () => {
       Upload,
       Evaluation,
       ContactInformation,
+      Quiz,
+      Question,
+      Answer,
     ],
     synchronize: true,
     migrations: ['migration/*.ts'],
@@ -45,7 +50,7 @@ const startServer = async () => {
   });
 
   const schema = await buildSchema({
-    resolvers: [UserResolver, CourseResolver],
+    resolvers: [UserResolver, CourseResolver, QuizResolver],
     authChecker: passwordAuthChecker,
     nullableByDefault: true,
   });
