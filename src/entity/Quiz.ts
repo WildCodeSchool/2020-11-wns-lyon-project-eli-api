@@ -1,4 +1,4 @@
-import { Field, InputType, ObjectType } from 'type-graphql';
+import { Field, InputType, Int, ObjectType } from 'type-graphql';
 import {
   Entity,
   BaseEntity,
@@ -35,9 +35,11 @@ export class Quiz extends BaseEntity {
   })
   subtitle?: string;
 
+  @Field(() => [Question])
   @OneToMany(() => Question, (question) => question.quiz)
   questions?: Question[];
 
+  @Field(() => Int)
   @ManyToOne(() => User, (user) => user.quizzes, { nullable: false })
   user!: number;
 

@@ -1,4 +1,4 @@
-import { Field, InputType, ObjectType } from 'type-graphql';
+import { Field, InputType, Int, ObjectType } from 'type-graphql';
 import {
   Entity,
   BaseEntity,
@@ -22,6 +22,10 @@ import { Question } from './Question';
 @Entity()
 export class Answer extends BaseEntity {
   @PrimaryGeneratedColumn()
+  uuid!: number;
+
+  @Field()
+  @Column()
   id!: number;
 
   @Field({ nullable: false })
@@ -36,6 +40,25 @@ export class Answer extends BaseEntity {
   @IsBoolean()
   is_correct!: boolean;
 
+  @Field(() => Int)
   @ManyToOne(() => Question, (question ) => question.answers, { nullable: false })
   question!: number;
 }
+
+/*
+@InputType('AnswerInput')
+export class AnswerInput extends BaseEntity {
+  @Field(() => String, { nullable: false })
+  @Length(2, 120, {
+    message: 'The label must be at least 2 but not longer than 120 characters',
+  })
+  label!: string;
+
+  @Field({ nullable: false })
+  @IsBoolean()
+  is_correct!: boolean;
+
+  @Field(() => Int)
+  question!: number;
+}
+*/

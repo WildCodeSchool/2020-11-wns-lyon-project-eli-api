@@ -1,10 +1,16 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { getRepository } from 'typeorm';
 import { Quiz } from '../entity/Quiz';
+import { AnswerResolver } from './Answer';
+import { QuestionResolver } from './Question';
+import { Question } from '../entity/Question';
+import { Answer } from '../entity/Answer';
 
 @Resolver(Quiz)
 export class QuizResolver {
   private quizRepo = getRepository(Quiz);
+  private questionResolver = new QuestionResolver()
+  private answerResolver = new AnswerResolver()
 
   @Query(() => Quiz)
   public async getQuiz(@Arg('id') id: number): Promise<Quiz | void> {
@@ -18,14 +24,26 @@ export class QuizResolver {
     @Ctx() ctx
   ): Promise<Quiz | void> {
     const user = ctx.user;
-    const newQuiz = this.quizRepo.create({
-      ...values,
-      user,
-    });
 
-    return await this.quizRepo
-      .save(newQuiz)
-      .catch((e) => console.log('quiz save error', e));
+    try {
+      let newQuiz = this.quizRepo.create({
+        ...values,
+        user: user.id,
+      });
+      const quiz = await this.quizRepo.save(newQuiz);
+      // now we can assign quiz.id to each question
+      quiz.questions?.map(async q => {
+        const question: Question | void = await this.questionResolver.createQuestion(q, quiz.id);
+        if (question) {
+          question.answers?.map(async a => {
+            await this.answerResolver.createAnswer(a, question.uuid)
+          })
+        }
+      })
+    }
+     catch (e) {
+      console.log('error createQuiz', e)
+    }
   }
 
   @Authorized('TEACHER')

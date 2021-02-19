@@ -1,4 +1,4 @@
-import { Field, InputType, ObjectType } from 'type-graphql';
+import { Field, InputType, Int, ObjectType } from 'type-graphql';
 import {
   Entity,
   BaseEntity,
@@ -23,6 +23,10 @@ import { Quiz } from './Quiz';
 @Entity()
 export class Question extends BaseEntity {
   @PrimaryGeneratedColumn()
+  uuid!: number;
+
+  @Field()
+  @Column()
   id!: number;
 
   @Field({ nullable: false })
@@ -32,6 +36,7 @@ export class Question extends BaseEntity {
   })
   label!: string;
 
+  @Field(() => [Answer])
   @OneToMany(() => Answer, (answer) => answer.question)
   answers?: Answer[];
 
@@ -40,6 +45,7 @@ export class Question extends BaseEntity {
   @IsBoolean()
   multiple_choice?: boolean;
 
+  @Field(() => Int)
   @ManyToOne(() => Quiz, (quiz) => quiz.questions, { nullable: false })
   quiz!: number;
 }

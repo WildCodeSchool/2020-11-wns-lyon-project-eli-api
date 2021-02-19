@@ -7,7 +7,6 @@ export const passwordAuthChecker: AuthChecker = async (
   { context }: any,
   roles
 ) => {
-  console.log('context passAuth', context);
   // `roles` comes from the `@Authorized` decorator, eg. ["ADMIN", "MODERATOR"]
   try {
     const token = context.req.headers.authorization.split('Bearer ')[1];

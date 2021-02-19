@@ -15,10 +15,13 @@ export class AnswerResolver {
   @Mutation(() => Answer)
   public async createAnswer(
     @Arg('values', () => Answer) values: Answer,
-    @Arg('question') question: number,
+    @Arg('question') question: number
   ): Promise<Answer | void> {
+    const { id, label, is_correct } = values;
     const newAnswer = this.answerRepo.create({
-      ...values,
+      id,
+      label,
+      is_correct,
       question,
     });
 
@@ -31,7 +34,7 @@ export class AnswerResolver {
   @Mutation(() => Answer)
   public async updateAnswer(
     @Arg('id') id: number,
-    @Arg('values') values: Answer,
+    @Arg('values') values: Answer
   ): Promise<Answer> {
     const answer = await this.answerRepo.findOne({
       where: { id },
