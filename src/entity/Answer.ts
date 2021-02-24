@@ -14,7 +14,7 @@ import { IsBoolean, Length } from 'class-validator';
 import { User } from './User';
 import { Upload } from './Upload';
 import { Evaluation } from './Evaluation';
-import { Speciality } from './Speciality';
+import { Tag } from './Tag';
 import { Question } from './Question';
 
 @ObjectType('Answer')

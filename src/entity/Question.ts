@@ -14,7 +14,7 @@ import { IsBoolean, Length } from 'class-validator';
 import { User } from './User';
 import { Upload } from './Upload';
 import { Evaluation } from './Evaluation';
-import { Speciality } from './Speciality';
+import { Tag } from './Tag';
 import { Answer } from './Answer';
 import { Quiz } from './Quiz';
 
@@ -23,11 +23,11 @@ import { Quiz } from './Quiz';
 @Entity()
 export class Question extends BaseEntity {
   @PrimaryGeneratedColumn()
-  uuid!: number;
+  uuid!: number;  // db id
 
   @Field()
   @Column()
-  id!: number;
+  id!: number; // order
 
   @Field({ nullable: false })
   @Column({ type: 'varchar', length: 120 })

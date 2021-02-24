@@ -16,7 +16,7 @@ import {
 import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 import { Course } from './Course';
 import { Promotion } from './Promotion';
-import { Speciality } from './Speciality';
+import { Tag } from './Tag';
 import { Evaluation } from './Evaluation';
 import { ContactInformation } from './ContactInformation';
 import { Question } from './Question';
@@ -86,9 +86,9 @@ export class User extends BaseEntity {
   promotions!: Promotion[];
 
   @Authorized('TEACHER')
-  @ManyToMany(() => Speciality)
+  @ManyToMany(() => Tag)
   @JoinTable({ name: 'teacher_has_specialities' })
-  specialities!: Speciality[];
+  specialities!: Tag[];
 
   @OneToMany(() => Quiz, (quiz ) => quiz.user)
   quizzes?: Quiz[];

@@ -6,7 +6,7 @@ import { Upload } from './entity/Upload';
 import { Course } from './entity/Course';
 import { Question } from './entity/Question';
 import { Promotion } from './entity/Promotion';
-import { Speciality } from './entity/Speciality';
+import { Tag } from './entity/Tag';
 import { Evaluation } from './entity/Evaluation';
 import { ContactInformation } from './entity/ContactInformation';
 import { CourseResolver } from './resolvers/Course';
@@ -22,6 +22,7 @@ import cors = require('cors');
 import cookieParser = require('cookie-parser');
 import { QuestionResolver } from './resolvers/Question';
 import { AnswerResolver } from './resolvers/Answer';
+import { TagResolver } from './resolvers/Tag';
 
 dotenv.config();
 
@@ -37,13 +38,13 @@ const startServer = async () => {
       User,
       Course,
       Promotion,
-      Speciality,
       Upload,
       Evaluation,
       ContactInformation,
       Quiz,
       Question,
       Answer,
+      Tag,
     ],
     synchronize: true,
     migrations: ['migration/*.ts'],
@@ -59,6 +60,7 @@ const startServer = async () => {
       QuizResolver,
       QuestionResolver,
       AnswerResolver,
+      TagResolver,
     ],
     authChecker: passwordAuthChecker,
     nullableByDefault: true,

@@ -7,11 +7,13 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
+  OneToMany, ManyToMany, JoinTable,
 } from 'typeorm';
 import { Length } from 'class-validator';
 import { User } from './User';
 import { Question } from './Question';
+import { Evaluation } from './Evaluation';
+import { Tag } from './Tag';
 
 @ObjectType('Quiz')
 @InputType('QuizInput')
@@ -42,6 +44,13 @@ export class Quiz extends BaseEntity {
   @Field(() => Int)
   @ManyToOne(() => User, (user) => user.quizzes, { nullable: false })
   user!: number;
+
+  @ManyToMany(() => Tag)
+  @JoinTable({ name: 'quiz_has_tags' })
+  tags?: Tag[];
+
+  @Field( () => [Tag])
+  tag?: Tag[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;
