@@ -6,6 +6,7 @@ import { QuestionResolver } from './Question';
 import { Question } from '../entity/Question';
 import { Tag } from '../entity/Tag';
 import { Answer } from '../entity/Answer';
+import { TagResolver } from './Tag';
 
 @Resolver(Quiz)
 export class QuizResolver {
@@ -14,8 +15,9 @@ export class QuizResolver {
 
   private questionResolver = new QuestionResolver();
   private answerResolver = new AnswerResolver();
+  private tagResolver = new TagResolver();
 
-  private getQuizToEdit = async (id: number, user: number) => {
+  private getQuizToEdit = async (id: number, user: number): Promise<Quiz> => {
     const quiz = await this.quizRepo.findOne({
       where: { id, user },
     });
@@ -26,6 +28,16 @@ export class QuizResolver {
       );
     }
     return quiz;
+  };
+
+  private createTagIfNotExist = async (tags: Tag[]): Promise<void> => {
+    for (const t of tags) {
+      let tag = await this.tagResolver.getTagByName(t.name);
+
+      if (!tag) {
+        await this.tagResolver.createTag(t);
+      }
+    }
   };
 
   @Query(() => Quiz)
@@ -49,6 +61,7 @@ export class QuizResolver {
         ...values,
         user: ctx.user.id,
       });
+
       const quiz = await this.quizRepo.save(newQuiz);
       // now we can assign quiz.id to each question
       quiz.questions?.map(async (q: Question) => {
@@ -61,13 +74,21 @@ export class QuizResolver {
             return await this.answerResolver.createAnswer(a, question.uuid);
           });
         }
-        return question
+        return question;
       });
-      console.log(quiz)
-      // idem for tags
-      //TODO
-      //  tags
-      return await this.quizRepo.save(quiz)
+
+      if (quiz.tags) {
+        await this.createTagIfNotExist(quiz.tags).then(
+          () => {
+            quiz.tags?.map(async (t) => {
+              let tag = await this.tagResolver.getTagByName(t.name);
+              if (tag) quiz.tags = quiz.tags ? [...quiz.tags, tag] : [tag];
+            });
+          }
+        );
+      }
+
+      return await this.quizRepo.save(quiz);
     } catch (e) {
       console.log('error createQuiz', e);
       throw new Error('Oups, something wrong ! Please retry later');

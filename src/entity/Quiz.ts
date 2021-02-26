@@ -46,11 +46,9 @@ export class Quiz extends BaseEntity {
   user!: number;
 
   @ManyToMany(() => Tag)
-  @JoinTable({ name: 'quiz_has_tags' })
+  @JoinTable({ name: 'quiz_has_tags'})
+  @Field( () => [Tag], {defaultValue: []})
   tags?: Tag[];
-
-  @Field( () => [Tag])
-  tag?: Tag[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;
