@@ -50,6 +50,17 @@ export class QuizResolver {
     return quiz;
   }
 
+  @Query(() => [Quiz])
+  public async getQuizzes(@Arg('order') order: "ASC" | "DESC"): Promise<Quiz[] | void> {
+    const quizzes = await this.quizRepo.find({ order: {createdAt: order}});
+
+    if (!quizzes) {
+      throw new Error('Any quiz founded, sorry !');
+    }
+    console.log(quizzes)
+    return quizzes;
+  }
+
   @Authorized('TEACHER')
   @Mutation(() => Quiz)
   public async createQuiz(
@@ -57,7 +68,7 @@ export class QuizResolver {
     @Ctx() ctx
   ): Promise<Quiz | void> {
     try {
-      let newQuiz = this.quizRepo.create({
+      const newQuiz = this.quizRepo.create({
         ...values,
         user: ctx.user.id,
       });
@@ -109,7 +120,7 @@ export class QuizResolver {
 
   @Authorized('TEACHER')
   @Mutation(() => Quiz)
-  public async assignQuestionTag(
+  public async assignQuizTag(
     @Arg('id') id: number,
     @Arg('value') value: number,
     @Ctx() ctx
@@ -132,7 +143,7 @@ export class QuizResolver {
 
   @Authorized('TEACHER')
   @Mutation(() => Quiz)
-  public async removeQuestionTag(
+  public async removeQuizTag(
     @Arg('id') id: number,
     @Arg('value') value: number,
     @Ctx() ctx

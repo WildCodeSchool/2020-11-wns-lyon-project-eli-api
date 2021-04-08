@@ -51,6 +51,7 @@ export class Quiz extends BaseEntity {
   tags?: Tag[];
 
   @CreateDateColumn({ type: 'timestamp' })
+  @Field()
   createdAt!: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
