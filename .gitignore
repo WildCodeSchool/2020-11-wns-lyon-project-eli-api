@@ -3,6 +3,7 @@
 node_modules/
 tmp/
 temp/
+dist
 docker-compose.yml
 .env
 package-lock.json
