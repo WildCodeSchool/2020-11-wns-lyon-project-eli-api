@@ -37,7 +37,7 @@
       "typeorm": "0.2.29"
    },
    "scripts": {
-      "start": "npm run dev",
+      "start": "npm run prod",
       "build": "tsc",
       "lint": "eslint . ",
       "lint-fix": "eslint --fix . ",
