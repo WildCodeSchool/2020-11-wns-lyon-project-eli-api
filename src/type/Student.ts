@@ -1,11 +1,11 @@
-import {Field, InputType, ObjectType} from "type-graphql";
+import { Field, InputType, ObjectType } from 'type-graphql';
 
 @InputType('StudentInput')
 @ObjectType('StudentType')
 export class StudentInput {
-    @Field()
-    email!: string;
+  @Field()
+  email!: string;
 
-    @Field()
-    password!: string;
+  @Field()
+  password!: string;
 }
