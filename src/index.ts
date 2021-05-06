@@ -54,6 +54,7 @@ const startServer = async () => {
   app.use(cookieParser());
   const server = new ApolloServer({
     schema,
+    playground: true,
     context: ({ req, res }) => ({ req, res }),
   });
 
