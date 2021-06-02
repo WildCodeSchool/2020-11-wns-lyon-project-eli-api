@@ -15,6 +15,7 @@ import {
 } from 'typeorm';
 import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 import { Course } from './Course';
+import { Quiz } from './Quiz';
 import { Promotion } from './Promotion';
 import { Speciality } from './Speciality';
 import { Evaluation } from './Evaluation';
@@ -69,6 +70,10 @@ export class User extends BaseEntity {
   @ManyToMany(() => Evaluation)
   @JoinTable({ name: 'student_has_evaluations' })
   student_evaluations!: Evaluation[];
+
+  @ManyToMany(() => Quiz)
+  @JoinTable({ name: 'student_has_quizs' })
+  quiz!: Quiz[];
 
   ////
 

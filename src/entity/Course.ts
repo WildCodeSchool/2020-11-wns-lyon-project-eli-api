@@ -27,7 +27,7 @@ export class Course extends BaseEntity {
   @Field()
   @Column({ type: 'varchar', length: 120 })
   @Length(2, 40, {
-    message: 'The suject must be at least 2 but not longer than 40 characters',
+    message: 'The subject must be at least 2 but not longer than 40 characters',
   })
   subject!: string;
 
@@ -41,7 +41,7 @@ export class Course extends BaseEntity {
   @Field()
   @Column({ type: 'varchar', length: 120 })
   @Length(2, 120, {
-    message: 'The title must be at least 2 but not longer than 120 characters',
+    message: 'The intro must be at least 2 but not longer than 120 characters',
   })
   intro?: string;
 
