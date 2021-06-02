@@ -9,6 +9,7 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
 } from 'typeorm';
 import { IsBoolean, IsOptional, IsPositive, Length } from 'class-validator';
 import { User } from './User';
