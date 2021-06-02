@@ -20,6 +20,7 @@ import { Speciality } from './Speciality';
 @InputType('CourseInput')
 @Entity()
 export class Course extends BaseEntity {
+  @Field({ nullable: false })
   @PrimaryGeneratedColumn()
   id!: number;
 
