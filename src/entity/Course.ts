@@ -9,6 +9,7 @@ import {
   JoinTable,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
 } from 'typeorm';
 import { Length } from 'class-validator';
 import { User } from './User';
@@ -26,10 +27,11 @@ export class Course extends BaseEntity {
 
   @Field()
   @Column({ type: 'varchar', length: 120 })
+  @OneToOne(() => Speciality)
   @Length(2, 40, {
     message: 'The suject must be at least 2 but not longer than 40 characters',
   })
-  subject!: string;
+  speciality!: string;
 
   @Field({ nullable: false })
   @Column({ type: 'varchar', length: 120 })
