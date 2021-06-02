@@ -26,12 +26,9 @@ export class Course extends BaseEntity {
   id!: number;
 
   @Field()
-  @Column({ type: 'varchar', length: 120 })
+  @Column({ type: 'int' })
   @OneToOne(() => Speciality)
-  @Length(2, 40, {
-    message: 'The suject must be at least 2 but not longer than 40 characters',
-  })
-  speciality!: string;
+  speciality!: number;
 
   @Field({ nullable: false })
   @Column({ type: 'varchar', length: 120 })
