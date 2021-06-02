@@ -28,7 +28,7 @@ export class Course extends BaseEntity {
   @Field()
   @Column({ type: 'int' })
   @OneToOne(() => Speciality)
-  speciality!: number;
+  speciality!: Promise<Speciality>;
 
   @Field({ nullable: false })
   @Column({ type: 'varchar', length: 120 })
