@@ -24,12 +24,26 @@ export class Course extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Field()
+  @Column({ type: 'varchar', length: 120 })
+  @Length(2, 40, {
+    message: 'The suject must be at least 2 but not longer than 40 characters',
+  })
+  subject!: string;
+
   @Field({ nullable: false })
   @Column({ type: 'varchar', length: 120 })
   @Length(2, 120, {
     message: 'The title must be at least 2 but not longer than 120 characters',
   })
   title!: string;
+
+  @Field()
+  @Column({ type: 'varchar', length: 120 })
+  @Length(2, 120, {
+    message: 'The title must be at least 2 but not longer than 120 characters',
+  })
+  intro?: string;
 
   @Field()
   @Column({ type: 'varchar', length: 120, nullable: true })
@@ -42,6 +56,10 @@ export class Course extends BaseEntity {
   @Field(() => String, { defaultValue: null })
   @Column({ type: 'text', nullable: true })
   content?: string | null;
+
+  @Field(() => String, { defaultValue: null })
+  @Column({ type: 'text' })
+  logo?: string | null;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;
