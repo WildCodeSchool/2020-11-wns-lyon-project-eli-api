@@ -32,9 +32,7 @@ export class Speciality extends BaseEntity {
   })
   description!: string;
 
-  @Field()
-  @Column({ type: 'int' })
-  @OneToMany(() => Course, (course) => course.id)
+  @OneToMany((type) => Course, (course) => course.id)
   @JoinColumn({ name: 'courses_speciality' })
-  speciality!: Course[];
+  course!: Course[];
 }
