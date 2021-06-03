@@ -74,7 +74,7 @@ export class Course extends BaseEntity {
   evaluations!: Evaluation[];
 
   @Field()
-  @ManyToMany(() => Speciality)
-  @JoinTable({ name: 'courses_has_specialities' })
-  specialities!: Speciality[];
+  @Column({ type: 'varchar', length: '120' })
+  @OneToOne(() => Speciality)
+  speciality!: Speciality;
 }

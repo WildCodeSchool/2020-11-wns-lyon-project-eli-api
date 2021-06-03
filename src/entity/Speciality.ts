@@ -31,8 +31,4 @@ export class Speciality extends BaseEntity {
     message: 'The title must be at least 2 but not longer than 120 characters',
   })
   description!: string;
-
-  @OneToMany(() => Course, (course) => course.id)
-  @JoinColumn({ name: 'courses_speciality' })
-  course!: Course[];
 }
