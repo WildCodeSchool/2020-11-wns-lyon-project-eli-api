@@ -10,6 +10,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Length } from 'class-validator';
 import { User } from './User';
@@ -28,6 +29,7 @@ export class Course extends BaseEntity {
   @Field()
   @Column({ type: 'int' })
   @OneToOne(() => Speciality)
+  @JoinColumn({ name: 'speciality_id' })
   speciality!: Speciality;
 
   @Field({ nullable: false })
