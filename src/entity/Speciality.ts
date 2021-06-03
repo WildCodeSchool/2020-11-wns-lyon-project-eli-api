@@ -1,6 +1,14 @@
 import { Field, InputType, ObjectType } from 'type-graphql';
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  BaseEntity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  JoinColumn,
+} from 'typeorm';
 import { Length } from 'class-validator';
+import { Course } from './Course';
 
 @ObjectType('Speciality')
 @InputType('SpecialityInput')
@@ -23,4 +31,10 @@ export class Speciality extends BaseEntity {
     message: 'The title must be at least 2 but not longer than 120 characters',
   })
   description!: string;
+
+  @Field()
+  @Column({ type: 'int' })
+  @OneToMany(() => Course, (course) => course.id)
+  @JoinColumn({ name: 'courses_speciality' })
+  speciality!: Course[];
 }

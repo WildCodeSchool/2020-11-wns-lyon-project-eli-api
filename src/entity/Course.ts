@@ -28,8 +28,8 @@ export class Course extends BaseEntity {
 
   @Field()
   @Column({ type: 'int' })
-  @OneToOne(() => Speciality)
-  @JoinColumn({ name: 'speciality_id' })
+  @ManyToOne(() => Speciality)
+  @JoinColumn({ name: 'courses_speciality' })
   speciality!: Speciality;
 
   @Field({ nullable: false })
