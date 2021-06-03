@@ -26,12 +26,6 @@ export class Course extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Field()
-  @Column({ type: 'int' })
-  @ManyToOne(() => Speciality)
-  @JoinColumn({ name: 'courses_speciality' })
-  speciality!: Speciality;
-
   @Field({ nullable: false })
   @Column({ type: 'varchar', length: 120 })
   @Length(2, 120, {
@@ -79,6 +73,7 @@ export class Course extends BaseEntity {
   @JoinTable({ name: 'courses_has_evaluations' })
   evaluations!: Evaluation[];
 
+  @Field()
   @ManyToMany(() => Speciality)
   @JoinTable({ name: 'courses_has_specialities' })
   specialities!: Speciality[];
