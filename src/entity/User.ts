@@ -27,6 +27,7 @@ export type ROLE = 'TEACHER' | 'STUDENT';
 @InputType('UserInput')
 @Entity()
 export class User extends BaseEntity {
+  @Field()
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -71,10 +72,6 @@ export class User extends BaseEntity {
   @JoinTable({ name: 'student_has_evaluations' })
   student_evaluations!: Evaluation[];
 
-  @ManyToMany(() => Quiz)
-  @JoinTable({ name: 'student_has_quizs' })
-  quiz!: Quiz[];
-
   ////
 
   // for teacher
@@ -83,6 +80,10 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Evaluation, (evaluation) => evaluation.user)
   teacher_evaluations!: Evaluation[];
+
+  @Field(() => Quiz)
+  @OneToMany(() => Quiz, (quiz) => quiz.author)
+  quiz!: Quiz[];
 
   @ManyToMany(() => Promotion)
   @JoinTable({ name: 'teacher_has_promotions' })
@@ -94,10 +95,11 @@ export class User extends BaseEntity {
   specialities!: Speciality[];
 
   ////
-
+  @Field()
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;
 
+  @Field()
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date;
 }

@@ -1,9 +1,13 @@
+import { QuestionResolver } from './resolvers/Question';
+import { QuizResolver } from './resolvers/Quiz';
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
 import cors = require('cors');
 import cookieParser = require('cookie-parser');
 import { User } from './entity/User';
+import { Quiz } from './entity/Quiz';
+import { Question } from './entity/Question';
 import { UserResolver } from './resolvers/User';
 import { Course } from './entity/Course';
 import { Promotion } from './entity/Promotion';
@@ -30,6 +34,8 @@ const startServer = async () => {
     entities: [
       User,
       Course,
+      Quiz,
+      Question,
       Promotion,
       Speciality,
       Upload,
@@ -44,7 +50,7 @@ const startServer = async () => {
   });
 
   const schema = await buildSchema({
-    resolvers: [UserResolver, CourseResolver],
+    resolvers: [UserResolver, CourseResolver, QuizResolver, QuestionResolver],
     authChecker: passwordAuthChecker,
     nullableByDefault: true,
   });

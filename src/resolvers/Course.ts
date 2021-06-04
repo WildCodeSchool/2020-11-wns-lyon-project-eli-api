@@ -22,7 +22,9 @@ export class CourseResolver {
     @Arg('values', () => Course) values: Course,
     @Ctx() ctx
   ): Promise<Course | void> {
-    const user = ctx.user;
+    console.log(values);
+
+    /*const user = ctx.user;
     const newCourse = this.courseRepo.create({
       ...values,
       user,
@@ -30,7 +32,7 @@ export class CourseResolver {
 
     return await this.courseRepo
       .save(newCourse)
-      .catch((e) => console.log('course save error', e));
+      .catch((e) => console.log('course save error', e));*/
   }
 
   @Authorized('TEACHER')

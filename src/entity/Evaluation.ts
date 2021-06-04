@@ -9,6 +9,7 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
 } from 'typeorm';
 import { IsBoolean, IsOptional, IsPositive, Length } from 'class-validator';
 import { User } from './User';
@@ -40,6 +41,11 @@ export class Evaluation extends BaseEntity {
   @Field(() => String)
   @Column({ type: 'text', nullable: true })
   content?: string;
+
+  @Field()
+  @Column({ type: 'int' })
+  @OneToOne(() => Speciality)
+  speciality!: number;
 
   @Field({ nullable: false })
   @Column({ type: 'tinyint', default: false })

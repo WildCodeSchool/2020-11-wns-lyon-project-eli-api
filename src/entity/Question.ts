@@ -23,7 +23,8 @@ export class Question extends BaseEntity {
   @Field()
   @Column({ type: 'varchar', length: 120 })
   @Length(2, 120, {
-    message: 'The Question must be at leadt 2 but not longer than 120 characters',
+    message:
+      'The Question must be at leadt 2 but not longer than 120 characters',
   })
   question!: string;
 
@@ -37,5 +38,5 @@ export class Question extends BaseEntity {
   quiz!: string;
 
   @ManyToOne(() => User, (user) => user.quiz, { nullable: false })
-  user!: number;
+  user!: User;
 }
