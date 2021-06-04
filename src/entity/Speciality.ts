@@ -4,14 +4,13 @@ import {
   BaseEntity,
   Column,
   PrimaryGeneratedColumn,
-  OneToMany,
-  JoinColumn,
+  Unique,
 } from 'typeorm';
 import { Length } from 'class-validator';
-import { Course } from './Course';
 
 @ObjectType('Speciality')
 @InputType('SpecialityInput')
+@Unique(['name'])
 @Entity()
 export class Speciality extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -31,4 +30,8 @@ export class Speciality extends BaseEntity {
     message: 'The title must be at least 2 but not longer than 120 characters',
   })
   description!: string;
+
+  @Field()
+  @Column({ type: 'text' })
+  logo!: string;
 }

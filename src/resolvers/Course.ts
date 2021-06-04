@@ -1,14 +1,20 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Course } from '../entity/Course';
+import { Speciality } from '../entity/Speciality';
 import { getRepository } from 'typeorm';
+
+import { SpecialityResolver } from './Speciality';
 
 @Resolver(Course)
 export class CourseResolver {
   private courseRepo = getRepository(Course);
+  private specialityRepo = getRepository(Speciality);
+
+  private specialityResolver = new SpecialityResolver();
 
   @Query(() => [Course])
   public async getCourses(): Promise<Course[]> {
-    return await this.courseRepo.find();
+    return await this.courseRepo.find({ relations: ['speciality'] });
   }
 
   @Query(() => Course)
@@ -22,17 +28,42 @@ export class CourseResolver {
     @Arg('values', () => Course) values: Course,
     @Ctx() ctx
   ): Promise<Course | void> {
-    console.log(values);
+    try {
+      const { name, description } = values.speciality;
+      const { title, intro, subtitle, content, logo } = values;
 
-    /*const user = ctx.user;
-    const newCourse = this.courseRepo.create({
-      ...values,
-      user,
-    });
+      let speciality;
+      const specialityExist = await this.specialityRepo.findOne({
+        where: { name },
+      });
 
-    return await this.courseRepo
-      .save(newCourse)
-      .catch((e) => console.log('course save error', e));*/
+      console.log('This exist :', specialityExist);
+
+      if (specialityExist == undefined) {
+        console.log('ICI');
+        speciality = new Speciality();
+        speciality.name = name;
+        speciality.description = description;
+
+        await this.specialityRepo.save(speciality);
+      } else {
+        console.log('LA');
+        speciality = specialityExist;
+      }
+
+      const course = new Course();
+      course.title = title;
+      course.intro = intro;
+      course.subtitle = subtitle;
+      course.content = content;
+      course.logo = logo;
+      course.user = ctx.user;
+      course.speciality = speciality;
+
+      return await this.courseRepo.save(course);
+    } catch (err) {
+      console.log('course save error', err);
+    }
   }
 
   @Authorized('TEACHER')
