@@ -73,8 +73,8 @@ export class Course extends BaseEntity {
   @JoinTable({ name: 'courses_has_evaluations' })
   evaluations!: Evaluation[];
 
-  @Field()
-  @Column({ type: 'varchar', length: '120' })
-  @OneToOne(() => Speciality)
+  @Field(() => Speciality)
+  @ManyToOne(() => Speciality)
+  @JoinColumn()
   speciality!: Speciality;
 }
