@@ -7,10 +7,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 import { Length } from 'class-validator';
 import { User } from './User';
 import { Quiz } from './Quiz';
+import { Response } from './Response';
 
 @ObjectType('Question')
 @InputType('QuestionInput')
@@ -35,8 +37,11 @@ export class Question extends BaseEntity {
   updatedAt!: Date;
 
   @ManyToOne(() => Quiz, (quiz) => quiz.question)
-  quiz!: string;
+  quiz!: Quiz;
+
+  @OneToMany(() => Response, (response) => response.question)
+  response!: Response;
 
   @ManyToOne(() => User, (user) => user.quiz, { nullable: false })
-  user!: User;
+  user!: number;
 }

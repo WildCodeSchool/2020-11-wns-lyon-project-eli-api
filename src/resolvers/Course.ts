@@ -9,7 +9,6 @@ import { SpecialityResolver } from './Speciality';
 export class CourseResolver {
   private courseRepo = getRepository(Course);
   private specialityRepo = getRepository(Speciality);
-
   private specialityResolver = new SpecialityResolver();
 
   @Query(() => [Course])
@@ -40,14 +39,13 @@ export class CourseResolver {
       console.log('This exist :', specialityExist);
 
       if (specialityExist == undefined) {
-        console.log('ICI');
         speciality = new Speciality();
         speciality.name = name;
         speciality.description = description;
+        speciality.logo = values.speciality.logo;
 
         await this.specialityRepo.save(speciality);
       } else {
-        console.log('LA');
         speciality = specialityExist;
       }
 

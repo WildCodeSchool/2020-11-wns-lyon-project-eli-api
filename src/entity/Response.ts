@@ -4,21 +4,19 @@ import {
   BaseEntity,
   Column,
   PrimaryGeneratedColumn,
-  OneToMany,
-  ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from 'typeorm';
 import { Length } from 'class-validator';
 import { User } from './User';
 import { Question } from './Question';
-import { Speciality } from './Speciality';
 
-@ObjectType('Quiz')
-@InputType('QuizInput')
+@ObjectType('Question')
+@InputType('QuestionInput')
 @Entity()
-export class Quiz extends BaseEntity {
-  @Field({ nullable: true })
+export class Response extends BaseEntity {
+  @Field()
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -26,27 +24,19 @@ export class Quiz extends BaseEntity {
   @Column({ type: 'varchar', length: 120 })
   @Length(2, 120, {
     message:
-      'The subject must be at least 2 but not longer than 120 characters',
+      'The Question must be at leadt 2 but not longer than 120 characters',
   })
-  subject!: string;
+  response!: string;
 
-  @Field()
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;
 
-  @Field()
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date;
 
-  @Field(() => [Question])
-  @OneToMany(() => Question, (question) => question.quiz)
-  question!: Question[];
+  @ManyToOne(() => Question, (question) => question.response)
+  question!: Question;
 
-  @Field(() => User)
   @ManyToOne(() => User, (user) => user.quiz, { nullable: false })
-  author!: number;
-
-  @Field(() => Speciality)
-  @ManyToOne(() => Speciality, (speciality) => speciality.quiz)
-  speciality!: Speciality;
+  user!: number;
 }

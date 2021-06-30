@@ -5,8 +5,10 @@ import {
   Column,
   PrimaryGeneratedColumn,
   Unique,
+  OneToMany,
 } from 'typeorm';
 import { Length } from 'class-validator';
+import { Quiz } from './Quiz';
 
 @ObjectType('Speciality')
 @InputType('SpecialityInput')
@@ -33,5 +35,9 @@ export class Speciality extends BaseEntity {
 
   @Field()
   @Column({ type: 'text' })
-  logo!: string;
+  logo?: string;
+
+  @Field(() => [Quiz])
+  @OneToMany(() => Quiz, (quiz) => quiz.speciality)
+  quiz!: Quiz[];
 }

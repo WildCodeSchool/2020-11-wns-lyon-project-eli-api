@@ -9,7 +9,6 @@ import {
   JoinTable,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
   JoinColumn,
 } from 'typeorm';
 import { Length } from 'class-validator';

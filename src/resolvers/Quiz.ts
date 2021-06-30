@@ -1,19 +1,34 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Quiz } from '../entity/Quiz';
 import { getRepository } from 'typeorm';
+import { Speciality } from '../entity/Speciality';
+import { Question } from '../entity/Question';
+import { Response } from '../entity/Response';
+import { ResponseResolver } from './Response';
+import { QuestionResolver } from './Question';
+import { SpecialityResolver } from './Speciality';
 
 @Resolver(Quiz)
 export class QuizResolver {
   private quizRepo = getRepository(Quiz);
+  private questionRepo = getRepository(Question);
+  private questionResolver = new QuestionResolver();
+  private responseRepo = getRepository(Response);
+  private ResponseResolver = new ResponseResolver();
+  private specialityRepo = getRepository(Speciality);
+  private specialityResolver = new SpecialityResolver();
 
   @Query(() => [Quiz])
   public async getQuizs(): Promise<Quiz[]> {
-    return await this.quizRepo.find();
+    return await this.quizRepo.find({ relations: ['speciality'] });
   }
 
   @Query(() => Quiz)
   public async getQuiz(@Arg('id') id: number): Promise<Quiz | void> {
-    return await this.quizRepo.findOne({ where: { id } });
+    return await this.quizRepo.findOne({
+      where: { id },
+      relations: ['speciality', 'question'],
+    });
   }
 
   @Authorized('TEACHER')
@@ -22,15 +37,54 @@ export class QuizResolver {
     @Arg('values', () => Quiz) values: Quiz,
     @Ctx() ctx
   ): Promise<Quiz | void> {
-    const author = ctx.user;
-    const newQuiz = this.quizRepo.create({
-      ...values,
-      author,
-    });
+    try {
+      const { name, description } = values.speciality;
+      const { subject } = values;
 
-    return await this.quizRepo
-      .save(newQuiz)
-      .catch((e) => console.log('quiz save error', e));
+      let speciality;
+      const specialityExist = await this.specialityRepo.findOne({
+        where: { name },
+      });
+
+      console.log('This speciality already exist :', specialityExist);
+
+      if (specialityExist == undefined) {
+        speciality = new Speciality();
+        speciality.name = name;
+        speciality.description = description;
+        speciality.logo = values.speciality.logo;
+
+        await this.specialityRepo.save(speciality);
+      } else {
+        speciality = specialityExist;
+      }
+
+      const quiz = new Quiz();
+      quiz.subject = subject;
+      quiz.author = ctx.user;
+      quiz.speciality = speciality;
+
+      await this.quizRepo.save(quiz);
+
+      for await (const quest of values.question) {
+        const qtn = new Question();
+        qtn.question = quest.question;
+        qtn.quiz = quiz;
+        qtn.user = ctx.user;
+        this.questionRepo.save(qtn);
+
+        for await (const res of quest.response) {
+          const response = new Response();
+          response.response = res.response;
+          response.user = ctx.user;
+
+          await this.responseRepo.save(response);
+        }
+      }
+      return quiz;
+    } catch (err) {
+      console.log('course save error', err);
+    }
   }
 
   @Authorized('TEACHER')
