@@ -40,7 +40,7 @@ export class Question extends BaseEntity {
   quiz!: Quiz;
 
   @OneToMany(() => Response, (response) => response.question)
-  response!: Response;
+  response!: Response[];
 
   @ManyToOne(() => User, (user) => user.quiz, { nullable: false })
   user!: number;

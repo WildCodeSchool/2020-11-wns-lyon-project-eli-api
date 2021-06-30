@@ -78,7 +78,7 @@ export class QuizResolver {
           response.response = res.response;
           response.user = ctx.user;
 
-          await this.responseRepo.save(response);
+          this.responseRepo.save(response);
         }
       }
       return quiz;
