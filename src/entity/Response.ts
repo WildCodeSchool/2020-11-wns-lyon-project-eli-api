@@ -12,8 +12,8 @@ import { Length } from 'class-validator';
 import { User } from './User';
 import { Question } from './Question';
 
-@ObjectType('Question')
-@InputType('QuestionInput')
+@ObjectType('Response')
+@InputType('ResponseInput')
 @Entity()
 export class Response extends BaseEntity {
   @Field()
@@ -24,7 +24,7 @@ export class Response extends BaseEntity {
   @Column({ type: 'varchar', length: 120 })
   @Length(2, 120, {
     message:
-      'The Question must be at leadt 2 but not longer than 120 characters',
+      'The Response must be at leadt 2 but not longer than 120 characters',
   })
   response!: string;
 

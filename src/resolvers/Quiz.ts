@@ -20,14 +20,16 @@ export class QuizResolver {
 
   @Query(() => [Quiz])
   public async getQuizs(): Promise<Quiz[]> {
-    return await this.quizRepo.find({ relations: ['speciality'] });
+    return await this.quizRepo.find({
+      relations: ['speciality', 'question', 'question.response'],
+    });
   }
 
   @Query(() => Quiz)
   public async getQuiz(@Arg('id') id: number): Promise<Quiz | void> {
     return await this.quizRepo.findOne({
       where: { id },
-      relations: ['speciality', 'question'],
+      relations: ['speciality', 'question', 'question.response'],
     });
   }
 
@@ -71,14 +73,15 @@ export class QuizResolver {
         qtn.question = quest.question;
         qtn.quiz = quiz;
         qtn.user = ctx.user;
-        this.questionRepo.save(qtn);
+        await this.questionRepo.save(qtn);
 
         for await (const res of quest.response) {
           const response = new Response();
           response.response = res.response;
           response.user = ctx.user;
+          response.question = qtn;
 
-          this.responseRepo.save(response);
+          await this.responseRepo.save(response);
         }
       }
       return quiz;

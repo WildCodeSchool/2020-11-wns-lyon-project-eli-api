@@ -39,6 +39,7 @@ export class Question extends BaseEntity {
   @ManyToOne(() => Quiz, (quiz) => quiz.question)
   quiz!: Quiz;
 
+  @Field(() => [Response])
   @OneToMany(() => Response, (response) => response.question)
   response!: Response[];
 

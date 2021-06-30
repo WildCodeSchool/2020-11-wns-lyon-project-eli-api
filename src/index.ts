@@ -8,6 +8,7 @@ import cookieParser = require('cookie-parser');
 import { User } from './entity/User';
 import { Quiz } from './entity/Quiz';
 import { Question } from './entity/Question';
+import { Response } from './entity/Response';
 import { UserResolver } from './resolvers/User';
 import { Course } from './entity/Course';
 import { Promotion } from './entity/Promotion';
@@ -31,17 +32,7 @@ const startServer = async () => {
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: 'ELI',
-    entities: [
-      User,
-      Course,
-      Quiz,
-      Question,
-      Promotion,
-      Speciality,
-      Upload,
-      Evaluation,
-      ContactInformation,
-    ],
+    entities: [__dirname + '/entity/*.ts'],
     synchronize: true,
     migrations: ['migration/*.ts'],
     cli: {
@@ -50,7 +41,7 @@ const startServer = async () => {
   });
 
   const schema = await buildSchema({
-    resolvers: [UserResolver, CourseResolver, QuizResolver, QuestionResolver],
+    resolvers: [__dirname + '/resolvers/*.{ts,js}'],
     authChecker: passwordAuthChecker,
     nullableByDefault: true,
   });
