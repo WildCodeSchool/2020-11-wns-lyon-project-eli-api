@@ -1,22 +1,8 @@
-import { QuestionResolver } from './resolvers/Question';
-import { QuizResolver } from './resolvers/Quiz';
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
 import cors = require('cors');
 import cookieParser = require('cookie-parser');
-import { User } from './entity/User';
-import { Quiz } from './entity/Quiz';
-import { Question } from './entity/Question';
-import { Response } from './entity/Response';
-import { UserResolver } from './resolvers/User';
-import { Course } from './entity/Course';
-import { Promotion } from './entity/Promotion';
-import { Speciality } from './entity/Speciality';
-import { Upload } from './entity/Upload';
-import { Evaluation } from './entity/Evaluation';
-import { ContactInformation } from './entity/ContactInformation';
-import { CourseResolver } from './resolvers/Course';
 import { passwordAuthChecker } from './utils/auth-checker';
 
 import { ApolloServer } from 'apollo-server-express';

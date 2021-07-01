@@ -20,6 +20,7 @@ import { Promotion } from './Promotion';
 import { Speciality } from './Speciality';
 import { Evaluation } from './Evaluation';
 import { ContactInformation } from './ContactInformation';
+import { QuizResults } from './QuizResults';
 
 export type ROLE = 'TEACHER' | 'STUDENT';
 
@@ -67,6 +68,9 @@ export class User extends BaseEntity {
 
   @ManyToOne(() => Promotion, (promotion) => promotion.users)
   promotion!: number;
+
+  @OneToMany(() => QuizResults, (quizResults) => quizResults.user)
+  quizResults!: QuizResults[];
 
   @ManyToMany(() => Evaluation)
   @JoinTable({ name: 'student_has_evaluations' })

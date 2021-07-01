@@ -8,6 +8,7 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
 } from 'typeorm';
 import { Length } from 'class-validator';
 import { User } from './User';
@@ -49,4 +50,5 @@ export class Quiz extends BaseEntity {
   @Field(() => Speciality)
   @ManyToOne(() => Speciality, (speciality) => speciality.quiz)
   speciality!: Speciality;
+  quiz: any;
 }

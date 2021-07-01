@@ -36,7 +36,7 @@ export class Question extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date;
 
-  @ManyToOne(() => Quiz, (quiz) => quiz.question)
+  @ManyToOne(() => Quiz, (quiz) => quiz.question, { onDelete: 'CASCADE' })
   quiz!: Quiz;
 
   @Field(() => [Response])

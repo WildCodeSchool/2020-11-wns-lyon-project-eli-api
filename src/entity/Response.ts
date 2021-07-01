@@ -1,3 +1,4 @@
+import { QuizResults } from './QuizResults';
 import { Field, InputType, ObjectType } from 'type-graphql';
 import {
   Entity,
@@ -28,15 +29,24 @@ export class Response extends BaseEntity {
   })
   response!: string;
 
+  @Field()
+  @Column({ type: 'boolean' })
+  value!: boolean;
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date;
 
-  @ManyToOne(() => Question, (question) => question.response)
+  @ManyToOne(() => Question, (question) => question.response, {
+    onDelete: 'CASCADE',
+  })
   question!: Question;
 
   @ManyToOne(() => User, (user) => user.quiz, { nullable: false })
   user!: number;
+
+  @ManyToOne(() => QuizResults, (quizresults) => quizresults.responses)
+  quizresults!: QuizResults[];
 }

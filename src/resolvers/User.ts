@@ -21,18 +21,10 @@ export class UserResolver {
     return ctx.user;
   }
 
-  // @Query(() => User)
-  //@Authorized()
-  // public async getUser(@Ctx() ctx): Promise<User> {
-  //     console.log(ctx.user)
-  //     return ctx.user;
-  // }
-
   @Mutation(() => AuthResult, { nullable: true })
   public async authenticate(
     @Arg('email') email: string,
     @Arg('password') password: string
-    // @Ctx() ctx
   ): Promise<AuthResult> {
     const user = await this.userRepo.findOneOrFail({ email });
 

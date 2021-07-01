@@ -80,6 +80,7 @@ export class QuizResolver {
           response.response = res.response;
           response.user = ctx.user;
           response.question = qtn;
+          response.value = res.value;
 
           await this.responseRepo.save(response);
         }
@@ -98,7 +99,8 @@ export class QuizResolver {
     @Ctx() ctx
   ): Promise<Quiz> {
     const quiz = await this.quizRepo.findOne({
-      where: { id, user: ctx.user },
+      where: { id },
+      relations: ['question', 'question.response'],
     });
 
     if (!quiz) {
@@ -106,9 +108,82 @@ export class QuizResolver {
         "Quiz not found or you're not authorize to update the quiz !"
       );
     }
-    const updatedQuiz = Object.assign(quiz, values);
 
-    return await this.quizRepo.save(updatedQuiz);
+    const updatedQuiz = Object.assign(quiz, values);
+    await this.quizRepo.save(updatedQuiz);
+
+    for await (const updateQuestion of quiz.question) {
+      const question = await this.questionRepo.findOne({
+        where: { id: updateQuestion.id },
+        relations: ['response'],
+      });
+
+      if (!question) {
+        const createQuestion = new Question();
+        createQuestion.question = updateQuestion.question;
+        createQuestion.quiz = updatedQuiz;
+
+        await this.questionRepo.save(createQuestion);
+      } else {
+        const updatedQuestion = Object.assign(question, updateQuestion);
+        await this.questionRepo.save(updatedQuestion);
+      }
+
+      for await (const updateResponse of updateQuestion.response) {
+        const response = await this.responseRepo.findOne({
+          where: { id: updateResponse.id },
+          relations: ['question'],
+        });
+
+        if (!response) {
+          const createResponse = new Response();
+          createResponse.response = updateResponse.response;
+          createResponse.value = updateResponse.value;
+          createResponse.question = updateQuestion;
+
+          await this.responseRepo.save(createResponse);
+        } else {
+          const updatedResponse = Object.assign(response, updateResponse);
+          await this.responseRepo.save(updatedResponse);
+        }
+      }
+
+      const allResponse = await this.responseRepo.find({
+        where: { question: updateQuestion },
+      });
+
+      for await (const thisResponse of allResponse) {
+        let isContained = false;
+        for await (const updateResponse of updateQuestion.response) {
+          if (thisResponse.id === updateResponse.id) {
+            isContained = true;
+          }
+        }
+
+        if (!isContained) {
+          await this.responseRepo.remove(thisResponse);
+        }
+      }
+    }
+
+    const allQuestion = await this.questionRepo.find({
+      where: { quiz },
+    });
+
+    for await (const thisQuestion of allQuestion) {
+      let isContained = false;
+      for await (const updateQuestion of quiz.question) {
+        if (thisQuestion.id === updateQuestion.id) {
+          isContained = true;
+        }
+      }
+
+      if (!isContained) {
+        await this.questionRepo.remove(thisQuestion);
+      }
+    }
+
+    return quiz;
   }
 
   @Authorized('TEACHER')
