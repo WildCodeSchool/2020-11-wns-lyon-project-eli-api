@@ -38,7 +38,8 @@ export class QuizResolver {
   @Mutation(() => Quiz)
   public async createQuiz(
     @Arg('values', () => Quiz) values: Quiz,
-    @Ctx() ctx: { user: User }
+    //eslint-disable-next-line
+    @Ctx() ctx: any
   ): Promise<Quiz | void> {
     try {
       const { name, description } = values.speciality;
