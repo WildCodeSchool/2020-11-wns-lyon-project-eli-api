@@ -7,6 +7,7 @@ import { Response } from '../entity/Response';
 import { ResponseResolver } from './Response';
 import { QuestionResolver } from './Question';
 import { SpecialityResolver } from './Speciality';
+import { User } from 'entity/User';
 
 @Resolver(Quiz)
 export class QuizResolver {
@@ -37,7 +38,7 @@ export class QuizResolver {
   @Mutation(() => Quiz)
   public async createQuiz(
     @Arg('values', () => Quiz) values: Quiz,
-    @Ctx() ctx
+    @Ctx() ctx: { user: User }
   ): Promise<Quiz | void> {
     try {
       const { name, description } = values.speciality;
@@ -95,8 +96,7 @@ export class QuizResolver {
   @Mutation(() => Quiz)
   public async updateQuiz(
     @Arg('id') id: number,
-    @Arg('values') values: Quiz,
-    @Ctx() ctx
+    @Arg('values') values: Quiz
   ): Promise<Quiz> {
     const quiz = await this.quizRepo.findOne({
       where: { id },

@@ -1,4 +1,5 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { User } from './../entity/User';
 import { Response } from '../entity/Response';
 import { getRepository } from 'typeorm';
 
@@ -20,7 +21,7 @@ export class ResponseResolver {
   @Mutation(() => Response)
   public async createResponse(
     @Arg('values', () => Response) values: Response,
-    @Ctx() ctx
+    @Ctx() ctx: { user: User }
   ): Promise<Response | void> {
     const user = ctx.user;
     const newResponse = this.responseRepo.create({
@@ -38,7 +39,7 @@ export class ResponseResolver {
   public async updateResponse(
     @Arg('id') id: number,
     @Arg('values') values: Response,
-    @Ctx() ctx
+    @Ctx() ctx: { user: User }
   ): Promise<Response> {
     const response = await this.responseRepo.findOne({
       where: { id, user: ctx.user },

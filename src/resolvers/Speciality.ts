@@ -8,7 +8,8 @@ export class SpecialityResolver {
 
   @Query(() => Speciality)
   @Authorized()
-  public async authenticatedUser(@Ctx() ctx): Promise<Speciality> {
+  //eslint-disable-next-line
+  public async authenticatedUser(@Ctx() ctx: any): Promise<Speciality> {
     return ctx.user;
   }
 

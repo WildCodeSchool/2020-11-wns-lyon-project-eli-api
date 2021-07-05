@@ -4,6 +4,7 @@ import { dataType, decodeJwt } from './helpers';
 import { User } from '../entity/User';
 
 export const passwordAuthChecker: AuthChecker = async (
+  //eslint-disable-next-line
   { context }: any,
   roles
 ) => {

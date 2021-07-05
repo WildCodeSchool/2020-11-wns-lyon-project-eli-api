@@ -11,11 +11,23 @@ import {
 import { User } from './User';
 import { Quiz } from './Quiz';
 
-@ObjectType('QuizResults')
+// Student inputs
 @InputType('QuizResultsInputs')
+@ObjectType('QuizResultsInputsInput')
+export class QuizResultsInputs {
+  @Field(() => Quiz)
+  quiz!: Quiz;
+
+  @Field(() => [Response])
+  responses!: Response[];
+}
+
+// Teacher management
+@InputType('QuizResults')
+@ObjectType('QuizResultsInput')
 @Entity()
 export class QuizResults extends BaseEntity {
-  @Field({ nullable: true })
+  @Field()
   @PrimaryGeneratedColumn()
   id!: number;
 

@@ -1,6 +1,7 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { getRepository } from 'typeorm';
-import { QuizResults } from './../entity/QuizResults';
+import { QuizResults, QuizResultsInputs } from './../entity/QuizResults';
+import { User } from './../entity/User';
 
 @Resolver(QuizResults)
 export class QuizResultsResolver {
@@ -24,11 +25,11 @@ export class QuizResultsResolver {
   }
 
   @Authorized('STUDENT')
-  @Mutation(() => QuizResults)
+  @Mutation(() => QuizResultsInputs)
   public async createQuizResult(
-    @Arg('values', () => QuizResults)
-    values: QuizResults,
-    @Ctx() ctx
+    @Arg('values', () => QuizResultsInputs)
+    values: QuizResultsInputs,
+    @Ctx() ctx: { user: User }
   ): Promise<QuizResults | void> {
     try {
       const quizResult = new QuizResults();

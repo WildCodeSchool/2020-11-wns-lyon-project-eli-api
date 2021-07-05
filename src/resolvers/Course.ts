@@ -1,15 +1,13 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { User } from './../entity/User';
 import { Course } from '../entity/Course';
 import { Speciality } from '../entity/Speciality';
 import { getRepository } from 'typeorm';
-
-import { SpecialityResolver } from './Speciality';
 
 @Resolver(Course)
 export class CourseResolver {
   private courseRepo = getRepository(Course);
   private specialityRepo = getRepository(Speciality);
-  private specialityResolver = new SpecialityResolver();
 
   @Query(() => [Course])
   public async getCourses(): Promise<Course[]> {
@@ -25,6 +23,7 @@ export class CourseResolver {
   @Mutation(() => Course)
   public async createCourse(
     @Arg('values', () => Course) values: Course,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     @Ctx() ctx
   ): Promise<Course | void> {
     try {
@@ -69,7 +68,7 @@ export class CourseResolver {
   public async updateCourse(
     @Arg('id') id: number,
     @Arg('values') values: Course,
-    @Ctx() ctx
+    @Ctx() ctx: { user: User }
   ): Promise<Course> {
     const course = await this.courseRepo.findOne({
       where: { id, user: ctx.user },
