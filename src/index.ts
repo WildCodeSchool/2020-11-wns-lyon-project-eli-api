@@ -11,6 +11,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const startServer = async () => {
+  console.log('=================');
+
   await createConnection({
     type: 'mysql',
     host: process.env.DB_HOST,
@@ -26,11 +28,15 @@ const startServer = async () => {
     },
   });
 
+  console.log('Synchronized');
+
   const schema = await buildSchema({
     resolvers: [__dirname + '/resolvers/*.{ts,js}'],
     authChecker: passwordAuthChecker,
     nullableByDefault: true,
   });
+
+  console.log('Schematized');
 
   const app = Express();
   app.use(cors());
@@ -42,12 +48,17 @@ const startServer = async () => {
     context: ({ req, res }) => ({ req, res }),
   });
 
+  console.log('Expressed');
+
   server.applyMiddleware({ app });
 
   app.listen(4300, () => {
-    console.log('server started');
+    console.log('Server started');
   });
+
+  console.log('=================');
 };
+
 startServer().catch((e) => {
   console.log(e);
 });
