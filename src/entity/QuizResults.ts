@@ -15,15 +15,17 @@ import { Quiz } from './Quiz';
 @InputType('QuizResultsInputs')
 @Entity()
 export class QuizResults extends BaseEntity {
-  @Field({ nullable: false })
+  @Field({ nullable: true })
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Field(() => Quiz)
   @ManyToOne(() => Quiz, (quizResults) => quizResults.quiz, {
     onDelete: 'CASCADE',
   })
   quiz!: Quiz;
 
+  @Field(() => [Response])
   @ManyToMany(() => Response)
   @JoinTable({ name: 'quizresults_have_responses' })
   responses!: Response[];

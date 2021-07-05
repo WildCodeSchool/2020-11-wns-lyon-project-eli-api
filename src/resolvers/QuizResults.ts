@@ -1,28 +1,43 @@
-import { QuizResolver } from './Quiz';
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
-import { Quiz } from '../entity/Quiz';
 import { getRepository } from 'typeorm';
-import { Response } from '../entity/Response';
 import { QuizResults } from './../entity/QuizResults';
 
 @Resolver(QuizResults)
 export class QuizResultsResolver {
   private quizResultsRepo = getRepository(QuizResults);
-  private quizResultsResolver = getRepository(QuizResults);
-  private responseRepo = getRepository(Response);
 
   @Query(() => [QuizResults])
   public async getQuizResults(): Promise<QuizResults[]> {
     return await this.quizResultsRepo.find({
-      relations: ['User', 'Quiz'],
+      relations: ['user', 'quiz'],
     });
   }
 
   @Query(() => QuizResults)
-  public async getQuizResult(@Arg('id') id: number): Promise<Quiz | void> {
+  public async getQuizResult(
+    @Arg('id') id: number
+  ): Promise<QuizResults | undefined> {
     return await this.quizResultsRepo.findOne({
       where: { id },
-      relations: ['User', 'Quiz'],
+      relations: ['user', 'quiz', 'responses'],
     });
+  }
+
+  @Authorized('STUDENT')
+  @Mutation(() => QuizResults)
+  public async createQuizResult(
+    @Arg('values', () => QuizResults)
+    values: QuizResults,
+    @Ctx() ctx
+  ): Promise<QuizResults | void> {
+    try {
+      const quizResult = new QuizResults();
+      quizResult.quiz = values.quiz;
+      quizResult.responses = values.responses;
+      quizResult.user = ctx.user;
+      return await this.quizResultsRepo.save(quizResult);
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
