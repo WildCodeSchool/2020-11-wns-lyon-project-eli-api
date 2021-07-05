@@ -54,9 +54,9 @@ const startServer = async () => {
 
   app.listen(4300, () => {
     console.log('Server started');
-  });
 
-  console.log('=================');
+    console.log('=================');
+  });
 };
 
 startServer().catch((e) => {
