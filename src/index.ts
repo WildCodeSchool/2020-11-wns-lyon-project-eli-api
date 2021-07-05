@@ -13,7 +13,7 @@ dotenv.config();
 const startServer = async () => {
   console.log('=================');
 
-  await createConnection({
+  const connection = await createConnection({
     type: 'mysql',
     host: process.env.DB_HOST,
     port: 3306,
@@ -28,6 +28,7 @@ const startServer = async () => {
     },
   });
 
+  await connection.synchronize();
   console.log('Synchronized');
 
   const schema = await buildSchema({
