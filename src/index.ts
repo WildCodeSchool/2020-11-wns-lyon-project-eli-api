@@ -13,7 +13,7 @@ dotenv.config();
 const startServer = async () => {
   console.log('=================');
 
-  const connection = await createConnection({
+  await createConnection({
     type: 'mysql',
     host: process.env.DB_HOST,
     port: 3306,
@@ -22,13 +22,8 @@ const startServer = async () => {
     database: 'ELI',
     entities: [__dirname + '/entity/*.ts'],
     synchronize: true,
-    migrations: ['migration/*.ts'],
-    cli: {
-      migrationsDir: 'migration',
-    },
   });
 
-  await connection.synchronize();
   console.log('Synchronized');
 
   const schema = await buildSchema({
