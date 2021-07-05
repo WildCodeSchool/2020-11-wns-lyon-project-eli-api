@@ -1,5 +1,4 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
-import { User } from './../entity/User';
 import { Question } from '../entity/Question';
 import { getRepository } from 'typeorm';
 
@@ -21,7 +20,7 @@ export class QuestionResolver {
   @Mutation(() => Question)
   public async createQuestion(
     @Arg('values', () => Question) values: Question,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    // eslint-disable-next-line
     @Ctx() ctx
   ): Promise<Question | void> {
     const user = ctx.user;
@@ -40,7 +39,8 @@ export class QuestionResolver {
   public async updateQuestion(
     @Arg('id') id: number,
     @Arg('values') values: Question,
-    @Ctx() ctx: { user: User }
+    //eslint-disable-next-line
+    @Ctx() ctx: any
   ): Promise<Question> {
     const question = await this.questionRepo.findOne({
       where: { id, user: ctx.user },

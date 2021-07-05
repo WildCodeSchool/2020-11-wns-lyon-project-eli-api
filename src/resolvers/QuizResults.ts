@@ -1,7 +1,6 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { getRepository } from 'typeorm';
 import { QuizResults, QuizResultsInputs } from './../entity/QuizResults';
-import { User } from './../entity/User';
 
 @Resolver(QuizResults)
 export class QuizResultsResolver {
@@ -29,7 +28,8 @@ export class QuizResultsResolver {
   public async createQuizResult(
     @Arg('values', () => QuizResultsInputs)
     values: QuizResultsInputs,
-    @Ctx() ctx: { user: User }
+    //eslint-disable-next-line
+    @Ctx() ctx: any
   ): Promise<QuizResults | void> {
     try {
       const quizResult = new QuizResults();

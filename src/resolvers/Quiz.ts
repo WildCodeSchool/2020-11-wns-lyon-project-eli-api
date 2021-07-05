@@ -4,20 +4,13 @@ import { getRepository } from 'typeorm';
 import { Speciality } from '../entity/Speciality';
 import { Question } from '../entity/Question';
 import { Response } from '../entity/Response';
-import { ResponseResolver } from './Response';
-import { QuestionResolver } from './Question';
-import { SpecialityResolver } from './Speciality';
-import { User } from 'entity/User';
 
 @Resolver(Quiz)
 export class QuizResolver {
   private quizRepo = getRepository(Quiz);
   private questionRepo = getRepository(Question);
-  private questionResolver = new QuestionResolver();
   private responseRepo = getRepository(Response);
-  private ResponseResolver = new ResponseResolver();
   private specialityRepo = getRepository(Speciality);
-  private specialityResolver = new SpecialityResolver();
 
   @Query(() => [Quiz])
   public async getQuizs(): Promise<Quiz[]> {

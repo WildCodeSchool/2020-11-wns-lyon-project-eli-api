@@ -16,6 +16,7 @@ export class UserResolver {
 
   @Query(() => User)
   @Authorized()
+  //eslint-disable-next-line
   public async authenticatedUser(@Ctx() ctx): Promise<User> {
     console.log();
     return ctx.user;

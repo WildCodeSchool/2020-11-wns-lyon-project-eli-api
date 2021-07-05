@@ -21,7 +21,8 @@ export class ResponseResolver {
   @Mutation(() => Response)
   public async createResponse(
     @Arg('values', () => Response) values: Response,
-    @Ctx() ctx: { user: User }
+    //eslint-disable-next-line
+    @Ctx() ctx: any
   ): Promise<Response | void> {
     const user = ctx.user;
     const newResponse = this.responseRepo.create({
@@ -39,7 +40,8 @@ export class ResponseResolver {
   public async updateResponse(
     @Arg('id') id: number,
     @Arg('values') values: Response,
-    @Ctx() ctx: { user: User }
+    //eslint-disable-next-line
+    @Ctx() ctx: any
   ): Promise<Response> {
     const response = await this.responseRepo.findOne({
       where: { id, user: ctx.user },
