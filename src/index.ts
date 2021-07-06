@@ -20,7 +20,7 @@ const startServer = async () => {
       port: 3306,
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
-      database: 'eli',
+      database: 'ELI',
       entities: ['./entity/*.ts'],
       synchronize: true,
       logging: true,
