@@ -21,7 +21,7 @@ const startServer = async () => {
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: 'eli',
-      entities: [__dirname + '/entity/*.ts'],
+      entities: ['./entity/*.ts'],
       synchronize: true,
       logging: true,
     });
@@ -29,7 +29,7 @@ const startServer = async () => {
     console.log('Synchronized');
 
     const schema = await buildSchema({
-      resolvers: [__dirname + '/resolvers/*.{ts,js}'],
+      resolvers: ['./resolvers/*.{ts,js}'],
       authChecker: passwordAuthChecker,
       nullableByDefault: true,
     });
