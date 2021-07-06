@@ -13,6 +13,7 @@ dotenv.config();
 const startServer = async () => {
   try {
     console.log('=================');
+    console.log(__dirname + '/src/entity/*.{ts,js}');
 
     await createConnection({
       type: 'mysql',
@@ -21,7 +22,7 @@ const startServer = async () => {
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: 'ELI',
-      entities: [__dirname + './src/entity/*.{ts,js}'],
+      entities: [__dirname + '/src/entity/*.{ts,js}'],
       synchronize: true,
       logging: true,
     });
@@ -29,7 +30,7 @@ const startServer = async () => {
     console.log('Synchronized');
 
     const schema = await buildSchema({
-      resolvers: [__dirname + './src/resolvers/*.{ts,js}'],
+      resolvers: [__dirname + '/src/resolvers/*.{ts,js}'],
       authChecker: passwordAuthChecker,
       nullableByDefault: true,
     });
