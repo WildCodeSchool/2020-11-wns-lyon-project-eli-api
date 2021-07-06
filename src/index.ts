@@ -13,7 +13,6 @@ dotenv.config();
 const startServer = async () => {
   try {
     console.log('=================');
-    console.log(__dirname + '/entity/*.{ts,js}');
 
     await createConnection({
       type: 'mysql',
@@ -24,7 +23,7 @@ const startServer = async () => {
       database: 'ELI',
       entities: [__dirname + '/entity/*.{ts,js}'],
       synchronize: true,
-      logging: true,
+      // logging: true,
     });
 
     console.log('Synchronized');
@@ -52,7 +51,7 @@ const startServer = async () => {
     server.applyMiddleware({ app });
 
     app.listen(4300, () => {
-      console.log('Server started');
+      console.log('Started');
 
       console.log('=================');
     });
