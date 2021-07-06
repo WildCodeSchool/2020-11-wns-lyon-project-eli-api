@@ -42,7 +42,7 @@
     "lint": "eslint . ",
     "lint-fix": "eslint --fix . ",
     "dev": "ts-node-dev --transpile-only --respawn  ./src/index.ts",
-    "prod": "tsc && node ./dist/index.js",
+    "prod": "tsc && cd ./dist && node index.js",
     "debug": "tsc && node --inspect ./dist/index.ts",
     "prettier": "prettier --write ./src"
   },

@@ -28,8 +28,11 @@ const startServer = async () => {
 
     console.log('Synchronized');
 
+    console.log(__dirname);
+    console.log(process.cwd());
+
     const schema = await buildSchema({
-      resolvers: ['./resolvers/*.{ts,js}'],
+      resolvers: ['./resolvers/*.ts'],
       authChecker: passwordAuthChecker,
       nullableByDefault: true,
     });
