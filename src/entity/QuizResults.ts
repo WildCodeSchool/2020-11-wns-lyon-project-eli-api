@@ -42,7 +42,6 @@ export class QuizResults extends BaseEntity {
   @JoinTable({ name: 'quizresults_have_responses' })
   responses!: Response[];
 
-  @Field(() => User)
   @ManyToOne(() => User, (user) => user.quizResults)
   user!: User;
 }
