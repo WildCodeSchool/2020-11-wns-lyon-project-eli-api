@@ -32,7 +32,7 @@ export class QuizResults extends BaseEntity {
   id!: number;
 
   @Field(() => Quiz)
-  @ManyToOne(() => Quiz, (quizResults) => quizResults.quiz, {
+  @ManyToOne(() => Quiz, (quizResults: QuizResults) => quizResults.quiz, {
     onDelete: 'CASCADE',
   })
   quiz!: Quiz;

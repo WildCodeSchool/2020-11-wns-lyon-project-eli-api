@@ -50,5 +50,4 @@ export class Quiz extends BaseEntity {
   @Field(() => Speciality)
   @ManyToOne(() => Speciality, (speciality) => speciality.quiz)
   speciality!: Speciality;
-  quiz: any;
 }
